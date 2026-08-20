@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="לוח חשבון אתר">
+<meta name="theme-color" content="#0F2138">
+<title>לוח חשבון אתר</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;800;900&family=Assistant:wght@400;500;600;700&family=Roboto+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0F2138;
+    --navy-deep:#0A1728;
+    --line:#2E5090;
+    --concrete:#C9C4B8;
+    --concrete-dark:#98917F;
+    --chalk:#F1EFE6;
+    --orange:#FF7A29;
+    --orange-deep:#D9601A;
+    --red:#E1524B;
+    --green:#4CAF7D;
+    --radius:14px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{height:100%;}
+  body{
+    font-family:'Assistant', sans-serif;
+    background:
+      linear-gradient(var(--navy), var(--navy)),
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(46,80,144,0.35) 39px, rgba(46,80,144,0.35) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(46,80,144,0.35) 39px, rgba(46,80,144,0.35) 40px);
+    background-color:var(--navy);
+    color:var(--chalk);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    padding:calc(24px + env(safe-area-inset-top)) 14px calc(24px + env(safe-area-inset-bottom));
+  }
+  #app{width:100%; max-width:480px; display:flex; flex-direction:column; gap:18px;}
+  .eyebrow{
+    font-family:'Roboto Mono', monospace;
+    font-size:12px;
+    letter-spacing:2px;
+    color:var(--orange);
+    text-align:center;
+  }
+  h1.title{
+    font-family:'Heebo', sans-serif;
+    font-weight:900;
+    font-size:30px;
+    text-align:center;
+    letter-spacing:-0.5px;
+    line-height:1.15;
+  }
+  p.subtitle{
+    text-align:center;
+    color:var(--concrete);
+    font-size:15px;
+    line-height:1.5;
+  }
+  .card{
+    background:var(--chalk);
+    color:var(--navy-deep);
+    border-radius:var(--radius);
+    padding:20px;
+    position:relative;
+    box-shadow:0 10px 24px rgba(0,0,0,0.35);
+  }
+  .mode-btn{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    width:100%;
+    background:var(--chalk);
+    color:var(--navy-deep);
+    border:none;
+    border-radius:var(--radius);
+    padding:18px 20px;
+    cursor:pointer;
+    text-align:right;
+    font-family:'Assistant', sans-serif;
+    box-shadow:0 8px 18px rgba(0,0,0,0.3);
+    border-right:6px solid var(--orange);
+    transition:transform .12s ease;
+  }
+  .mode-btn:active{transform:scale(0.98);}
+  .mode-btn .mode-label{font-family:'Heebo',sans-serif; font-weight:800; font-size:19px;}
+  .mode-btn .mode-desc{font-size:13px; color:var(--concrete-dark); margin-top:2px;}
+  .mode-btn .arrow{font-family:'Roboto Mono',monospace; font-size:20px; color:var(--orange);}
+  .ghost-btn{
+    background:transparent;
+    border:1.5px dashed rgba(241,239,230,0.4);
+    color:var(--chalk);
+    border-radius:10px;
+    padding:12px 16px;
+    font-family:'Assistant', sans-serif;
+    font-size:14px;
+    cursor:pointer;
+    width:100%;
+  }
+  .ghost-btn:active{background:rgba(241,239,230,0.08);}
+  .primary-btn{
+    background:var(--orange);
+    color:var(--navy-deep);
+    border:none;
+    border-radius:10px;
+    padding:14px 18px;
+    font-family:'Heebo', sans-serif;
+    font-weight:800;
+    font-size:16px;
+    cursor:pointer;
+    width:100%;
+  }
+  .primary-btn:active{background:var(--orange-deep);}
+  .primary-btn:disabled{opacity:0.45; cursor:not-allowed;}
+
+  /* work order ticket */
+  .ticket{
+    background:var(--chalk);
+    color:var(--navy-deep);
+    border-radius:var(--radius);
+    overflow:hidden;
+    box-shadow:0 10px 24px rgba(0,0,0,0.35);
+  }
+  .ticket-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:var(--navy-deep);
+    color:var(--chalk);
+    padding:10px 16px;
+    font-family:'Roboto Mono', monospace;
+    font-size:12px;
+    letter-spacing:1px;
+  }
+  .ticket-head .streak{color:var(--orange); font-weight:700;}
+  .ticket-body{
+    padding:26px 20px 22px;
+    border-bottom:2px dashed var(--concrete-dark);
+    text-align:center;
+  }
+  .op-tag{
+    display:inline-block;
+    font-family:'Roboto Mono', monospace;
+    font-size:11px;
+    letter-spacing:1.5px;
+    color:#fff;
+    background:var(--orange);
+    padding:3px 10px;
+    border-radius:20px;
+    margin-bottom:12px;
+  }
+  .question-text{
+    font-family:'Heebo', sans-serif;
+    font-weight:700;
+    font-size:19px;
+    line-height:1.5;
+  }
+  .ticket-foot{padding:18px 20px 20px;}
+  .answer-input{
+    width:100%;
+    font-family:'Roboto Mono', monospace;
+    font-size:30px;
+    font-weight:700;
+    text-align:center;
+    padding:14px 10px;
+    border-radius:10px;
+    border:2px solid var(--concrete-dark);
+    background:#fff;
+    color:var(--navy-deep);
+    letter-spacing:2px;
+  }
+  .answer-input:focus{outline:none; border-color:var(--orange);}
+  .answer-input.correct{border-color:var(--green); background:#E8F7EE;}
+  .answer-input.wrong{border-color:var(--red); background:#FBE9E8;}
+
+  .stat-row{display:flex; justify-content:space-between; align-items:center; padding:0 4px;}
+  .stat{text-align:center; flex:1;}
+  .stat .num{font-family:'Roboto Mono', monospace; font-weight:700; font-size:22px; color:var(--chalk);}
+  .stat .lbl{font-size:11px; color:var(--concrete); letter-spacing:1px;}
+
+  /* measuring tape timer */
+  .tape-wrap{
+    background:var(--navy-deep);
+    border-radius:10px;
+    padding:8px 10px;
+    border:1px solid var(--line);
+  }
+  .tape-track{
+    position:relative;
+    height:26px;
+    border-radius:6px;
+    overflow:hidden;
+    background:
+      repeating-linear-gradient(90deg, rgba(241,239,230,0.5) 0 1px, transparent 1px 20px),
+      #17304F;
+  }
+  .tape-fill{
+    position:absolute; top:0; right:0; bottom:0;
+    background:var(--orange);
+    transition:width 1s linear, background 0.4s ease;
+  }
+  .tape-time{
+    text-align:center;
+    font-family:'Roboto Mono', monospace;
+    font-weight:700;
+    font-size:13px;
+    color:var(--concrete);
+    margin-top:6px;
+    letter-spacing:1px;
+  }
+
+  .name-input{
+    width:100%;
+    font-family:'Assistant', sans-serif;
+    font-size:17px;
+    padding:13px 14px;
+    border-radius:10px;
+    border:2px solid var(--concrete-dark);
+    text-align:right;
+  }
+  .name-input:focus{outline:none; border-color:var(--orange);}
+
+  .result-score{
+    font-family:'Heebo', sans-serif;
+    font-weight:900;
+    font-size:52px;
+    text-align:center;
+    color:var(--orange);
+    line-height:1;
+  }
+  .result-score-lbl{
+    text-align:center;
+    font-size:13px;
+    color:var(--concrete-dark);
+    letter-spacing:1px;
+    margin-top:4px;
+  }
+  .rank-badge{
+    display:block;
+    text-align:center;
+    font-family:'Roboto Mono', monospace;
+    font-size:14px;
+    color:var(--navy-deep);
+    background:var(--concrete);
+    border-radius:20px;
+    padding:6px 14px;
+    margin:14px auto 0;
+    width:fit-content;
+  }
+
+  .lb-list{list-style:none; display:flex; flex-direction:column; gap:8px; margin-top:14px;}
+  .lb-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 12px;
+    border-radius:8px;
+    background:rgba(255,255,255,0.6);
+  }
+  .lb-row.me{background:#FFE3CC; border:1.5px solid var(--orange);}
+  .lb-rank{
+    font-family:'Roboto Mono', monospace;
+    font-weight:700;
+    width:26px;
+    text-align:center;
+    color:var(--orange-deep);
+  }
+  .lb-name{flex:1; font-weight:600; font-size:14px;}
+  .lb-score{font-family:'Roboto Mono', monospace; font-weight:700;}
+  .lb-empty{text-align:center; color:var(--concrete-dark); font-size:14px; padding:10px 0;}
+
+  .flash-fb{
+    text-align:center;
+    font-family:'Heebo',sans-serif;
+    font-weight:800;
+    font-size:14px;
+    height:18px;
+  }
+  .flash-fb.ok{color:var(--green);}
+  .flash-fb.bad{color:var(--red);}
+
+  .row2{display:flex; gap:10px;}
+  .row2>*{flex:1;}
+  .footnote{text-align:center; font-size:12px; color:var(--concrete-dark);}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---------- data & storage helpers ----------
+  const OPS = ['add','sub','mul','div','pct'];
+  const OP_LABEL = {add:'חיבור', sub:'חיסור', mul:'כפל', div:'חילוק', pct:'אחוזים'};
+
+  function rand(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+
+  function makeQuestion(){
+    const op = OPS[rand(0, OPS.length-1)];
+    let a,b,p,answer,text;
+    switch(op){
+      case 'add': {
+        const t = [
+          (a,b)=>`לאתר הגיעו בבוקר ${a} שקי מלט, ובצהריים עוד ${b} שקים. כמה שקים הגיעו סה"כ?`,
+          (a,b)=>`הריצוף בקומה א׳ הוא ${a} מ"ר, ובקומה ב׳ ${b} מ"ר. כמה מ"ר ריצוף סה"כ?`,
+          (a,b)=>`הקבלן שילם ${a} ש"ח על חול ועוד ${b} ש"ח על אבן גרוס. מה סך ההוצאה?`
+        ];
+        a = rand(15,400); b = rand(15,400);
+        text = t[rand(0,t.length-1)](a,b); answer = a+b;
+        break;
+      }
+      case 'sub': {
+        a = rand(200,900); b = rand(20, a-10);
+        const t = [
+          (a,b)=>`מתקציב של ${a} ש"ח הוצאתם ${b} ש"ח על חומרים. כמה נשאר בתקציב?`,
+          (a,b)=>`במחסן היו ${a} מוטות ברזל, נלקחו ${b} לאתר. כמה מוטות נשארו במחסן?`,
+          (a,b)=>`השטח הכולל לבנייה הוא ${a} מ"ר, מתוכם ${b} מ"ר כבר נבנו. כמה מ"ר נותרו?`
+        ];
+        text = t[rand(0,t.length-1)](a,b); answer = a-b;
+        break;
+      }
+      case 'mul': {
+        a = rand(2,20)*10; b = rand(2,30);
+        const t = [
+          (a,b)=>`עלות ריצוף למ"ר היא ${a} ש"ח. כמה יעלה ריצוף של ${b} מ"ר?`,
+          (a,b)=>`פועל אחד מניח ${a} מ"ר טיח ביום. כמה מ"ר יניחו ${b} פועלים באותו יום?`,
+          (a,b)=>`משאית מובילה ${a} שקי מלט בכל נסיעה. כמה שקים ב-${b} נסיעות?`
+        ];
+        text = t[rand(0,t.length-1)](a,b); answer = a*b;
+        break;
+      }
+      case 'div': {
+        b = rand(2,20); const q = rand(4,90); a = b*q;
+        const t = [
+          (a,b)=>`יש לחלק ${a} מ"ר בין ${b} דירות שוות בגודלן. כמה מ"ר לדירה?`,
+          (a,b)=>`תקציב של ${a} ש"ח מתחלק שווה בשווה בין ${b} קבלני משנה. כמה מקבל כל אחד?`,
+          (a,b)=>`משאית הובילה בסה"כ ${a} שקי מלט ב-${b} נסיעות שוות. כמה שקים בכל נסיעה?`
+        ];
+        text = t[rand(0,t.length-1)](a,b); answer = q;
+        break;
+      }
+      case 'pct': {
+        const pOpts = [5,10,15,20,25,30,40,50];
+        p = pOpts[rand(0,pOpts.length-1)];
+        a = rand(1,50)*20;
+        const t = [
+          (a,p)=>`עמלת התיווך היא ${p}% מעסקה בשווי ${a} ש"ח. כמה שווה העמלה?`,
+          (a,p)=>`ניתנה הנחה של ${p}% על חומרי בניין בשווי ${a} ש"ח. כמה ש"ח ההנחה?`,
+          (a,p)=>`מע"מ בשיעור ${p}% נוסף לעסקה של ${a} ש"ח. כמה ש"ח יתווסף?`
+        ];
+        text = t[rand(0,t.length-1)](a,p); answer = Math.round(a*p/100);
+        break;
+      }
+    }
+    return {op, text, answer};
+  }
+
+  function getISOWeek(d){
+    const dt = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    const day = dt.getUTCDay() || 7;
+    dt.setUTCDate(dt.getUTCDate() + 4 - day);
+    const yStart = new Date(Date.UTC(dt.getUTCFullYear(),0,1));
+    const wk = Math.ceil((((dt - yStart) / 86400000) + 1)/7);
+    return `${dt.getUTCFullYear()}-W${String(wk).padStart(2,'0')}`;
+  }
+  const weekId = getISOWeek(new Date());
+
+  async function storGet(key, shared){
+    try{ const r = await window.storage.get(key, !!shared); return r ? r.value : null; }
+    catch(e){ return null; }
+  }
+  async function storSet(key, value, shared){
+    try{ await window.storage.set(key, value, !!shared); return true; }
+    catch(e){ return false; }
+  }
+  async function getLeaderboard(){
+    const raw = await storGet('leaderboard:'+weekId, true);
+    try{ return raw ? JSON.parse(raw) : []; }catch(e){ return []; }
+  }
+  async function saveLeaderboard(arr){ await storSet('leaderboard:'+weekId, JSON.stringify(arr), true); }
+  async function getPlayerName(){ return await storGet('player-name', false); }
+  async function setPlayerName(n){ await storSet('player-name', n, false); }
+
+  // ---------- app state ----------
+  const app = document.getElementById('app');
+  let state = { screen:'home' };
+
+  function esc(s){
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function render(){
+    if(state.screen==='home') return renderHome();
+    if(state.screen==='practice') return renderPlay(false);
+    if(state.screen==='practice-summary') return renderPracticeSummary();
+    if(state.screen==='comp-name') return renderCompName();
+    if(state.screen==='comp-already') return renderCompAlready();
+    if(state.screen==='comp-play') return renderPlay(true);
+    if(state.screen==='comp-result') return renderCompResult();
+    if(state.screen==='leaderboard') return renderLeaderboardScreen();
+  }
+
+  // ---------- HOME ----------
+  function renderHome(){
+    app.innerHTML = `
+      <div class="eyebrow">אתר עבודה · חישוב מהיר</div>
+      <h1 class="title">לוח חשבון אתר</h1>
+      <p class="subtitle">תרגול חיבור, חיסור, כפל, חילוק ואחוזים — בדיוק החישובים של היום-יום בבנייה ובנדל"ן.</p>
+
+      <button class="mode-btn" data-go="practice-start">
+        <div>
+          <div class="mode-label">תרגול חופשי</div>
+          <div class="mode-desc">בלי לחץ זמן, לשיפור הקצב</div>
+        </div>
+        <div class="arrow">◂</div>
+      </button>
+
+      <button class="mode-btn" data-go="comp-start">
+        <div>
+          <div class="mode-label">תחרות שבועית</div>
+          <div class="mode-desc">3 דקות, ניסיון אחד לשבוע, נגד החברים</div>
+        </div>
+        <div class="arrow">◂</div>
+      </button>
+
+      <button class="ghost-btn" data-go="leaderboard">טבלת המובילים השבוע ›</button>
+    `;
+    app.querySelector('[data-go="practice-start"]').onclick = startPractice;
+    app.querySelector('[data-go="comp-start"]').onclick = startCompetitionFlow;
+    app.querySelector('[data-go="leaderboard"]').onclick = () => { state.screen='leaderboard'; render(); };
+  }
+
+  // ---------- shared play engine ----------
+  function newRoundState(competition){
+    return {
+      competition,
+      score:0, streak:0, answered:0, correct:0,
+      q: makeQuestion(),
+      qStart: performance.now(),
+      timeLeft: competition ? 180 : null,
+      timerId: null,
+      locked:false
+    };
+  }
+
+  function startPractice(){
+    state.screen='practice';
+    state.round = newRoundState(false);
+    render();
+  }
+
+  async function startCompetitionFlow(){
+    const name = await getPlayerName();
+    const lb = await getLeaderboard();
+    if(name && lb.find(r => r.name.toLowerCase()===name.toLowerCase())){
+      state.screen='comp-already';
+      state.compName = name;
+      state.lb = lb;
+      render();
+      return;
+    }
+    if(name){
+      state.compName = name;
+      beginCompetitionPlay();
+    } else {
+      state.screen='comp-name';
+      render();
+    }
+  }
+
+  function renderCompName(){
+    app.innerHTML = `
+      <div class="eyebrow">תחרות שבועית</div>
+      <h1 class="title">איך קוראים לך בטבלה?</h1>
+      <div class="card">
+        <input class="name-input" id="nameField" maxlength="18" placeholder="שם או כינוי לתחרות" />
+      </div>
+      <button class="primary-btn" id="startCompBtn">התחל תחרות · 3 דקות</button>
+      <button class="ghost-btn" data-go="home">חזרה</button>
+    `;
+    const field = app.querySelector('#nameField');
+    const btn = app.querySelector('#startCompBtn');
+    field.focus();
+    field.addEventListener('keydown', e => { if(e.key==='Enter') btn.click(); });
+    btn.onclick = async () => {
+      const v = field.value.trim();
+      if(!v) { field.style.borderColor='var(--red)'; return; }
+      await setPlayerName(v);
+      state.compName = v;
+      beginCompetitionPlay();
+    };
+    app.querySelector('[data-go="home"]').onclick = () => { state.screen='home'; render(); };
+  }
+
+  function renderCompAlready(){
+    const lb = state.lb.slice().sort((a,b)=>b.score-a.score);
+    const idx = lb.findIndex(r => r.name.toLowerCase()===state.compName.toLowerCase());
+    app.innerHTML = `
+      <div class="eyebrow">תחרות שבועית</div>
+      <h1 class="title">כבר התחרית השבוע</h1>
+      <p class="subtitle">ניסיון אחד לשבוע — הניקוד שלך נשמר. חוזרים ביום א׳ הקרוב לתחרות חדשה.</p>
+      <div class="card">
+        <div class="result-score">${lb[idx].score}</div>
+        <div class="result-score-lbl">הניקוד שלך השבוע</div>
+        <div class="rank-badge">מקום ${idx+1} מתוך ${lb.length}</div>
+      </div>
+      <button class="ghost-btn" data-go="leaderboard">לצפייה בטבלה המלאה</button>
+      <button class="ghost-btn" data-go="home">חזרה לבית</button>
+    `;
+    app.querySelector('[data-go="leaderboard"]').onclick = () => { state.screen='leaderboard'; render(); };
+    app.querySelector('[data-go="home"]').onclick = () => { state.screen='home'; render(); };
+  }
+
+  function beginCompetitionPlay(){
+    state.screen='comp-play';
+    state.round = newRoundState(true);
+    render();
+    tickTimer();
+  }
+
+  function tickTimer(){
+    const r = state.round;
+    r.timerId = setInterval(() => {
+      r.timeLeft -= 1;
+      updateTapeOnly();
+      if(r.timeLeft <= 0){
+        clearInterval(r.timerId);
+        endCompetition();
+      }
+    }, 1000);
+  }
+
+  function updateTapeOnly(){
+    const fill = document.getElementById('tapeFill');
+    const label = document.getElementById('tapeTime');
+    if(!fill || !label) return;
+    const pct = Math.max(0, (state.round.timeLeft/180)*100);
+    fill.style.width = pct + '%';
+    fill.style.background = state.round.timeLeft <= 30 ? 'var(--red)' : 'var(--orange)';
+    const m = Math.floor(state.round.timeLeft/60), s = state.round.timeLeft%60;
+    label.textContent = `${m}:${String(s).padStart(2,'0')} נותרו`;
+  }
+
+  async function endCompetition(){
+    const lb = await getLeaderboard();
+    lb.push({name: state.compName, score: state.round.score, ts: Date.now()});
+    await saveLeaderboard(lb);
+    state.finalLb = lb;
+    state.screen='comp-result';
+    render();
+  }
+
+  // ---------- PLAY SCREEN (shared by practice & competition) ----------
+  function renderPlay(competition){
+    const r = state.round;
+    app.innerHTML = `
+      ${competition ? `
+      <div class="tape-wrap">
+        <div class="tape-track"><div class="tape-fill" id="tapeFill" style="width:100%"></div></div>
+        <div class="tape-time" id="tapeTime">3:00 נותרו</div>
+      </div>` : ''}
+
+      <div class="stat-row">
+        <div class="stat"><div class="num" id="scoreNum">${r.score}</div><div class="lbl">ניקוד</div></div>
+        <div class="stat"><div class="num" id="streakNum">${r.streak}</div><div class="lbl">רצף</div></div>
+        <div class="stat"><div class="num" id="answeredNum">${r.answered}</div><div class="lbl">שאלות</div></div>
+      </div>
+
+      <div class="ticket">
+        <div class="ticket-head">
+          <span>דף עבודה #<span id="qnum">${r.answered+1}</span></span>
+          <span class="streak">${r.streak>0 ? 'רצף ×'+r.streak : ''}</span>
+        </div>
+        <div class="ticket-body">
+          <div class="op-tag" id="opTag">${OP_LABEL[r.q.op]}</div>
+          <div class="question-text" id="qText">${esc(r.q.text)}</div>
+        </div>
+        <div class="ticket-foot">
+          <input class="answer-input" id="ansInput" type="tel" inputmode="numeric" autocomplete="off" placeholder="התשובה שלך" />
+          <div class="flash-fb" id="flashFb"></div>
+        </div>
+      </div>
+
+      <button class="primary-btn" id="submitBtn">שלח תשובה</button>
+      ${!competition ? '<button class="ghost-btn" id="endPracticeBtn">סיים תרגול</button>' : ''}
+    `;
+
+    const input = app.querySelector('#ansInput');
+    const submitBtn = app.querySelector('#submitBtn');
+    input.focus();
+    input.addEventListener('keydown', e => { if(e.key==='Enter') submitAnswer(competition); });
+    submitBtn.onclick = () => submitAnswer(competition);
+
+    if(!competition){
+      app.querySelector('#endPracticeBtn').onclick = () => {
+        state.screen='practice-summary';
+        render();
+      };
+    }
+  }
+
+  function submitAnswer(competition){
+    const r = state.round;
+    if(r.locked) return;
+    if(competition && r.timeLeft<=0) return;
+    r.locked = true;
+
+    const input = document.getElementById('ansInput');
+    const val = parseInt((input.value||'').trim(), 10);
+    const elapsedSec = (performance.now() - r.qStart)/1000;
+    const isCorrect = (val === r.q.answer);
+
+    let pts = 0;
+    if(isCorrect){
+      const base = Math.max(20, Math.round(100 - elapsedSec*12));
+      const streakBonus = Math.min(50, r.streak*5);
+      pts = base + streakBonus;
+      r.streak += 1;
+      r.correct += 1;
+    } else {
+      r.streak = 0;
+    }
+    r.score += pts;
+    r.answered += 1;
+
+    input.classList.add(isCorrect ? 'correct' : 'wrong');
+    input.disabled = true;
+    const fb = document.getElementById('flashFb');
+    fb.className = 'flash-fb ' + (isCorrect ? 'ok' : 'bad');
+    fb.textContent = isCorrect ? `נכון! +${pts} נק'` : `לא נכון — התשובה: ${r.q.answer}`;
+
+    document.getElementById('scoreNum').textContent = r.score;
+    document.getElementById('streakNum').textContent = r.streak;
+    document.getElementById('answeredNum').textContent = r.answered;
+
+    setTimeout(() => {
+      if(competition && r.timeLeft<=0) return; // timer already ended round
+      r.q = makeQuestion();
+      r.qStart = performance.now();
+      r.locked = false;
+      render();
+      if(competition) updateTapeOnly();
+    }, isCorrect ? 550 : 1100);
+  }
+
+  // ---------- practice summary ----------
+  function renderPracticeSummary(){
+    const r = state.round;
+    const acc = r.answered ? Math.round((r.correct/r.answered)*100) : 0;
+    app.innerHTML = `
+      <div class="eyebrow">תרגול חופשי · סיכום</div>
+      <h1 class="title">עבודה טובה</h1>
+      <div class="card">
+        <div class="result-score">${r.score}</div>
+        <div class="result-score-lbl">ניקוד בתרגול (לא נשמר)</div>
+      </div>
+      <div class="stat-row">
+        <div class="stat"><div class="num">${r.answered}</div><div class="lbl">שאלות</div></div>
+        <div class="stat"><div class="num">${acc}%</div><div class="lbl">דיוק</div></div>
+        <div class="stat"><div class="num">${r.streak}</div><div class="lbl">רצף אחרון</div></div>
+      </div>
+      <button class="primary-btn" id="again">עוד סיבוב תרגול</button>
+      <button class="ghost-btn" data-go="home">חזרה לבית</button>
+    `;
+    app.querySelector('#again').onclick = startPractice;
+    app.querySelector('[data-go="home"]').onclick = () => { state.screen='home'; render(); };
+  }
+
+  // ---------- competition result ----------
+  function renderCompResult(){
+    const r = state.round;
+    const lb = state.finalLb.slice().sort((a,b)=>b.score-a.score);
+    const idx = lb.findIndex(x => x.name===state.compName && x.score===r.score);
+    app.innerHTML = `
+      <div class="eyebrow">תחרות שבועית · תוצאה סופית</div>
+      <h1 class="title">הזמן נגמר</h1>
+      <div class="card">
+        <div class="result-score">${r.score}</div>
+        <div class="result-score-lbl">ניקוד סופי · ${r.answered} שאלות · ${r.correct} נכונות</div>
+        <div class="rank-badge">מקום ${idx+1} מתוך ${lb.length} השבוע</div>
+      </div>
+      ${leaderboardListHtml(lb, state.compName)}
+      <button class="ghost-btn" data-go="home">חזרה לבית</button>
+    `;
+    app.querySelector('[data-go="home"]').onclick = () => { state.screen='home'; render(); };
+  }
+
+  // ---------- leaderboard-only screen ----------
+  async function renderLeaderboardScreen(){
+    app.innerHTML = `
+      <div class="eyebrow">שבוע ${weekId.split('-W')[1]}</div>
+      <h1 class="title">טבלת המובילים</h1>
+      <div class="card" id="lbCard">טוען...</div>
+      <button class="ghost-btn" data-go="home">חזרה לבית</button>
+    `;
+    app.querySelector('[data-go="home"]').onclick = () => { state.screen='home'; render(); };
+    const lb = (await getLeaderboard()).slice().sort((a,b)=>b.score-a.score);
+    const myName = await getPlayerName();
+    document.getElementById('lbCard').outerHTML = leaderboardListHtml(lb, myName, true);
+  }
+
+  function leaderboardListHtml(lb, myName, standalone){
+    if(!lb.length){
+      return `<div class="card"><div class="lb-empty">עדיין אין תוצאות השבוע — היו הראשונים להתחרות.</div></div>`;
+    }
+    const rows = lb.map((r,i) => `
+      <li class="lb-row ${myName && r.name.toLowerCase()===myName.toLowerCase() ? 'me' : ''}">
+        <span class="lb-rank">${i+1}</span>
+        <span class="lb-name">${esc(r.name)}</span>
+        <span class="lb-score">${r.score}</span>
+      </li>
+    `).join('');
+    return `<div class="card"><ul class="lb-list">${rows}</ul></div>`;
+  }
+
+  render();
+})();
+</script>
+</body>
+</html>
