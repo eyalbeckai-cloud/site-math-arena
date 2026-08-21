@@ -505,7 +505,8 @@
   async function storGet(k,sh){ try{const r=await window.storage.get(k,!!sh); return r?r.value:null;}catch(e){return null;} }
   async function storSet(k,v,sh){ try{await window.storage.set(k,v,!!sh); return true;}catch(e){return false;} }
   async function getLeaderboard(){
-    const raw=await storGet('leaderboard:'+weekId,true);
+    const FIREBASE_DB_URL = "https://ebmathgame-default-rtdb.europe-west1.firebasedatabase.app";
+const raw=await storGet('leaderboard:'+weekId,true);
     try{ return raw?JSON.parse(raw):[]; }catch(e){ return []; }
   }
   async function saveLeaderboard(a){ await storSet('leaderboard:'+weekId, JSON.stringify(a), true); }
