@@ -5,372 +5,363 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="לוח חשבון אתר">
-<meta name="theme-color" content="#0F2138">
-<title>לוח חשבון אתר</title>
+<meta name="apple-mobile-web-app-title" content="א.ב. מתמטיקה שימושית">
+<meta name="theme-color" content="#0B0B0B">
+<title>א.ב. מתמטיקה שימושית</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;800;900&family=Assistant:wght@400;500;600;700&family=Roboto+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&family=Assistant:wght@400;500;600;700&family=Roboto+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --navy:#0F2138;
-    --navy-deep:#0A1728;
-    --line:#2E5090;
-    --concrete:#C9C4B8;
-    --concrete-dark:#98917F;
-    --chalk:#F1EFE6;
-    --orange:#FF7A29;
-    --orange-deep:#D9601A;
-    --red:#E1524B;
-    --green:#4CAF7D;
-    --radius:14px;
+    --red:#E1261C;
+    --red-dark:#A81810;
+    --green:#007A3D;
+    --green-dark:#005B2D;
+    --ink:#0B0B0B;
+    --ink-2:#161616;
+    --ink-3:#242424;
+    --paper:#FFFFFF;
+    --paper-2:#F3F1EC;
+    --muted:#5E5E5E;
+    --muted-light:#B9B6AF;
+    --gold:#C8A24A;
+    --radius:16px;
   }
-  *{box-sizing:border-box; margin:0; padding:0;}
+  *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
   html,body{height:100%;}
   body{
     font-family:'Assistant', sans-serif;
+    font-size:16px;
     background:
-      linear-gradient(var(--navy), var(--navy)),
-      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(46,80,144,0.35) 39px, rgba(46,80,144,0.35) 40px),
-      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(46,80,144,0.35) 39px, rgba(46,80,144,0.35) 40px);
-    background-color:var(--navy);
-    color:var(--chalk);
-    min-height:100vh;
+      radial-gradient(circle at 50% 0%, #1E1E1E 0%, var(--ink) 60%),
+      var(--ink);
+    color:var(--paper);
+    min-height:100dvh;
     display:flex;
     justify-content:center;
-    padding:calc(14px + env(safe-area-inset-top)) 12px calc(14px + env(safe-area-inset-bottom));
+    padding:calc(16px + env(safe-area-inset-top)) 16px calc(20px + env(safe-area-inset-bottom));
   }
-  #app{width:100%; max-width:480px; display:flex; flex-direction:column; gap:10px;}
-  .eyebrow{
-    font-family:'Roboto Mono', monospace;
-    font-size:11px;
-    letter-spacing:2px;
-    color:var(--orange);
-    text-align:center;
-  }
-  h1.title{
-    font-family:'Heebo', sans-serif;
-    font-weight:900;
-    font-size:24px;
-    text-align:center;
-    letter-spacing:-0.5px;
-    line-height:1.15;
-  }
-  p.subtitle{
-    text-align:center;
-    color:var(--concrete);
-    font-size:14px;
-    line-height:1.45;
-  }
-  .card{
-    background:var(--chalk);
-    color:var(--navy-deep);
-    border-radius:var(--radius);
-    padding:14px 18px;
-    position:relative;
-    box-shadow:0 10px 24px rgba(0,0,0,0.35);
-  }
-  .mode-btn{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:14px;
-    width:100%;
-    background:var(--chalk);
-    color:var(--navy-deep);
-    border:none;
-    border-radius:var(--radius);
-    padding:18px 20px;
-    cursor:pointer;
-    text-align:right;
-    font-family:'Assistant', sans-serif;
-    box-shadow:0 8px 18px rgba(0,0,0,0.3);
-    border-right:6px solid var(--orange);
-    transition:transform .12s ease;
-  }
-  .mode-btn:active{transform:scale(0.98);}
-  .mode-btn .mode-label{font-family:'Heebo',sans-serif; font-weight:800; font-size:19px;}
-  .mode-btn .mode-desc{font-size:13px; color:var(--concrete-dark); margin-top:2px;}
-  .mode-btn .arrow{font-family:'Roboto Mono',monospace; font-size:20px; color:var(--orange);}
 
-  .level-label-row{font-size:12px; color:var(--concrete); text-align:center; letter-spacing:1px;}
-  .level-row{display:flex; gap:8px;}
+  /* ===== brand bar ===== */
+  .brandbar{
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    padding-bottom:4px;
+  }
+  .brandmark{
+    width:38px; height:44px;
+    background:var(--red);
+    clip-path:polygon(0 0,100% 0,100% 68%,50% 100%,0 68%);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Heebo',sans-serif; font-weight:900; font-size:15px; color:#fff;
+    letter-spacing:-0.5px;
+    flex-shrink:0;
+  }
+  .brandname{
+    font-family:'Heebo',sans-serif; font-weight:900;
+    font-size:clamp(22px, 5.5vw, 34px);
+    letter-spacing:-0.5px; line-height:1.1;
+  }
+  .rule{
+    height:4px; border-radius:2px;
+    background:linear-gradient(90deg, var(--red) 0 33%, var(--paper) 33% 66%, var(--green) 66% 100%);
+    opacity:0.9;
+  }
+
+  /* ===== layout ===== */
+  #app{
+    width:100%;
+    max-width:520px;
+    display:flex; flex-direction:column; gap:16px;
+    margin:0 auto;
+  }
+  #app.wide{max-width:920px;}
+  @media (min-width:900px){
+    body{padding:36px 24px;}
+    .home-grid{display:grid; grid-template-columns:1.05fr 1fr; gap:22px; align-items:start;}
+    .home-hero{padding:8px 0;}
+  }
+
+  h1.title{
+    font-family:'Heebo', sans-serif; font-weight:900;
+    font-size:clamp(26px, 6vw, 40px);
+    line-height:1.15; letter-spacing:-0.5px;
+    text-align:center;
+  }
+  .lead{
+    text-align:center; font-size:clamp(16px,4vw,19px);
+    line-height:1.55; color:#EDEBE6; font-weight:600;
+  }
+  .sub{
+    text-align:center; font-size:clamp(14.5px,3.6vw,17px);
+    line-height:1.55; color:var(--muted-light);
+  }
+  @media (min-width:900px){
+    h1.title, .lead, .sub{text-align:right;}
+  }
+
+  /* ===== cards ===== */
+  .panel{
+    background:var(--paper);
+    color:var(--ink);
+    border-radius:var(--radius);
+    padding:20px;
+    box-shadow:0 14px 30px rgba(0,0,0,0.45);
+    border-top:5px solid var(--red);
+  }
+  .panel.green-top{border-top-color:var(--green);}
+  .panel-title{
+    font-family:'Heebo',sans-serif; font-weight:900;
+    font-size:20px; margin-bottom:4px;
+  }
+  .panel-desc{font-size:15px; color:var(--muted); line-height:1.5; margin-bottom:14px;}
+
+  .level-row{display:flex; gap:10px;}
   .level-btn{
-    flex:1;
-    border:none;
-    border-radius:10px;
-    padding:14px 6px;
-    font-family:'Heebo',sans-serif;
-    font-weight:800;
-    font-size:15px;
-    color:#fff;
-    cursor:pointer;
-    box-shadow:0 6px 14px rgba(0,0,0,0.25);
+    flex:1; border:none; border-radius:12px;
+    padding:16px 6px;
+    font-family:'Heebo',sans-serif; font-weight:800; font-size:17px;
+    color:#fff; cursor:pointer;
+    box-shadow:0 4px 0 rgba(0,0,0,0.22);
   }
   .level-btn.easy{background:var(--green);}
-  .level-btn.medium{background:var(--orange);}
+  .level-btn.medium{background:var(--gold); color:#2A2000;}
   .level-btn.hard{background:var(--red);}
-  .level-btn:active{filter:brightness(0.9); transform:scale(0.98);}
-  .ghost-btn{
-    background:transparent;
-    border:1.5px dashed rgba(241,239,230,0.4);
-    color:var(--chalk);
-    border-radius:10px;
-    padding:12px 16px;
-    font-family:'Assistant', sans-serif;
-    font-size:14px;
-    cursor:pointer;
-    width:100%;
-  }
-  .ghost-btn:active{background:rgba(241,239,230,0.08);}
-  .primary-btn{
-    background:var(--orange);
-    color:var(--navy-deep);
-    border:none;
-    border-radius:10px;
-    padding:14px 18px;
-    font-family:'Heebo', sans-serif;
-    font-weight:800;
-    font-size:16px;
-    cursor:pointer;
-    width:100%;
-  }
-  .primary-btn:active{background:var(--orange-deep);}
-  .primary-btn:disabled{opacity:0.45; cursor:not-allowed;}
+  .level-btn:active{transform:translateY(2px); box-shadow:0 2px 0 rgba(0,0,0,0.22);}
 
-  /* work order ticket */
-  .ticket{
-    background:var(--chalk);
-    color:var(--navy-deep);
+  .cta{
+    width:100%; border:none; border-radius:12px;
+    background:var(--green); color:#fff;
+    font-family:'Heebo',sans-serif; font-weight:800; font-size:18px;
+    padding:16px; cursor:pointer;
+    box-shadow:0 4px 0 var(--green-dark);
+  }
+  .cta:active{transform:translateY(2px); box-shadow:0 2px 0 var(--green-dark);}
+  .cta.red{background:var(--red); box-shadow:0 4px 0 var(--red-dark);}
+  .cta.red:active{box-shadow:0 2px 0 var(--red-dark);}
+
+  .ghost{
+    width:100%; border:2px solid rgba(255,255,255,0.28);
+    background:transparent; color:var(--paper);
+    border-radius:12px; padding:14px;
+    font-family:'Assistant',sans-serif; font-weight:600; font-size:16px;
+    cursor:pointer;
+  }
+  .ghost:active{background:rgba(255,255,255,0.08);}
+  .ghost.small{padding:11px; font-size:15px;}
+
+  /* ===== play screen ===== */
+  .qhead{
+    display:flex; justify-content:space-between; align-items:center;
+    font-family:'Roboto Mono',monospace; font-size:14px;
+    color:var(--muted-light); padding:0 2px;
+  }
+  .qhead .streak{color:var(--gold); font-weight:700;}
+
+  .qcard{
+    background:var(--paper); color:var(--ink);
     border-radius:var(--radius);
-    overflow:hidden;
-    box-shadow:0 10px 24px rgba(0,0,0,0.35);
-  }
-  .ticket-head{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    background:var(--navy-deep);
-    color:var(--chalk);
-    padding:7px 14px;
-    font-family:'Roboto Mono', monospace;
-    font-size:11px;
-    letter-spacing:1px;
-  }
-  .ticket-head .streak{color:var(--orange); font-weight:700;}
-  .ticket-body{
-    padding:14px 18px 12px;
-    border-bottom:2px dashed var(--concrete-dark);
+    padding:18px 18px 16px;
+    box-shadow:0 14px 30px rgba(0,0,0,0.45);
     text-align:center;
+    border-top:5px solid var(--red);
   }
-  .op-tag{
+  .diff-tag{
     display:inline-block;
-    font-family:'Roboto Mono', monospace;
-    font-size:10px;
-    letter-spacing:1.5px;
-    color:#fff;
-    background:var(--orange);
-    padding:2px 9px;
-    border-radius:20px;
-    margin-bottom:8px;
+    font-family:'Heebo',sans-serif; font-weight:800;
+    font-size:13px; letter-spacing:1px; color:#fff;
+    padding:4px 14px; border-radius:20px; margin-bottom:10px;
   }
-  .op-tag.easy{background:var(--green);}
-  .op-tag.medium{background:var(--orange);}
-  .op-tag.hard{background:var(--red);}
-  .question-text{
-    font-family:'Heebo', sans-serif;
-    font-weight:700;
-    font-size:16px;
-    line-height:1.4;
+  .diff-tag.easy{background:var(--green);}
+  .diff-tag.medium{background:var(--gold); color:#2A2000;}
+  .diff-tag.hard{background:var(--red);}
+  .qtext{
+    font-family:'Heebo',sans-serif; font-weight:700;
+    font-size:clamp(17px,4.4vw,21px); line-height:1.45;
   }
-  .ticket-foot{padding:12px 16px 14px;}
-  .answer-display{
-    width:100%;
-    font-family:'Roboto Mono', monospace;
-    font-size:24px;
-    font-weight:700;
-    text-align:center;
-    padding:9px 10px;
-    border-radius:9px;
-    border:2px solid var(--concrete-dark);
-    background:#fff;
-    color:var(--navy-deep);
-    letter-spacing:2px;
-    min-height:42px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
-  .answer-display.empty{color:var(--concrete-dark); font-size:14px; font-weight:500; letter-spacing:normal; font-family:'Assistant',sans-serif;}
-  .answer-display.correct{border-color:var(--green); background:#E8F7EE;}
-  .answer-display.wrong{border-color:var(--red); background:#FBE9E8;}
 
+  .answer-bar{
+    background:var(--ink-2);
+    border:2px solid rgba(255,255,255,0.18);
+    border-radius:12px;
+    min-height:56px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Roboto Mono',monospace; font-weight:700;
+    font-size:30px; letter-spacing:2px; color:#fff;
+    padding:8px;
+  }
+  .answer-bar.empty{
+    font-family:'Assistant',sans-serif; font-size:16px;
+    letter-spacing:normal; color:var(--muted-light); font-weight:500;
+  }
+  .answer-bar.correct{border-color:var(--green); background:rgba(0,122,61,0.22);}
+  .answer-bar.wrong{border-color:var(--red); background:rgba(225,38,28,0.18);}
+
+  .fb{
+    text-align:center; font-family:'Heebo',sans-serif; font-weight:800;
+    font-size:16px; min-height:22px;
+  }
+  .fb.ok{color:#5BD48B;}
+  .fb.bad{color:#FF7A72;}
+
+  /* ===== dialer keypad ===== */
   .keypad{
-    display:grid;
-    grid-template-columns:repeat(4, 1fr);
-    gap:6px;
-    margin-top:8px;
+    display:grid; grid-template-columns:repeat(3,1fr);
+    gap:clamp(10px,3vw,16px);
+    max-width:330px; margin:0 auto; width:100%;
   }
   .key{
-    font-family:'Roboto Mono', monospace;
-    font-size:17px;
-    font-weight:700;
-    padding:9px 0;
-    border-radius:9px;
-    border:none;
-    background:var(--concrete);
-    color:var(--navy-deep);
+    aspect-ratio:1/1;
+    border:none; border-radius:50%;
+    background:var(--ink-3); color:#fff;
+    font-family:'Heebo',sans-serif; font-weight:500;
+    font-size:clamp(26px,7.5vw,32px);
     cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    transition:background .1s;
   }
-  .key:active{background:var(--concrete-dark);}
-  .key.del{background:#DDD8CC; font-size:14px;}
-  .key.go{grid-column:span 4; background:var(--orange); color:#fff; font-family:'Heebo',sans-serif; font-size:15px;}
-  .key.go:active{background:var(--orange-deep);}
-  .key:disabled{opacity:0.5; cursor:not-allowed;}
+  .key:active{background:#3C3C3C;}
+  .key:disabled{opacity:0.45;}
+  .action-row{
+    display:flex; justify-content:center; align-items:center;
+    gap:clamp(24px,10vw,50px);
+    margin-top:4px;
+  }
+  .action-key{
+    width:clamp(66px,18vw,78px); height:clamp(66px,18vw,78px);
+    border:none; border-radius:50%;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:1px;
+    font-family:'Heebo',sans-serif; font-weight:800; font-size:13px;
+    color:#fff; cursor:pointer;
+  }
+  .action-key .glyph{font-size:26px; line-height:1;}
+  .action-key.ok{background:var(--green); box-shadow:0 5px 0 var(--green-dark);}
+  .action-key.ok:active{transform:translateY(2px); box-shadow:0 3px 0 var(--green-dark);}
+  .action-key.del{background:var(--ink-3); box-shadow:0 5px 0 #101010;}
+  .action-key.del:active{transform:translateY(2px); box-shadow:0 3px 0 #101010;}
+  .action-key:disabled{opacity:0.45;}
 
-  .stat-row{display:flex; justify-content:space-between; align-items:center; padding:0 4px;}
-  .stat{text-align:center; flex:1;}
-  .stat .num{font-family:'Roboto Mono', monospace; font-weight:700; font-size:18px; color:var(--chalk);}
-  .stat .lbl{font-size:10px; color:var(--concrete); letter-spacing:1px;}
+  /* ===== crane timer ===== */
+  .crane-wrap{
+    background:linear-gradient(180deg,#171717,#0E0E0E);
+    border:1px solid rgba(255,255,255,0.12);
+    border-radius:14px;
+    padding:8px 12px 6px;
+    display:flex; align-items:center; gap:12px;
+  }
+  .crane-svg{width:clamp(140px,42vw,190px); height:auto; flex-shrink:0;}
+  .crane-clock{flex:1; text-align:center;}
+  .crane-clock .t{
+    font-family:'Roboto Mono',monospace; font-weight:700;
+    font-size:clamp(26px,8vw,34px); color:#fff; line-height:1;
+  }
+  .crane-clock .l{font-size:13px; color:var(--muted-light); letter-spacing:1px; margin-top:4px;}
+  .crane-clock.danger .t{color:#FF7A72; animation:pulse .9s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.45;}}
+  .trolley{animation:trolley 5.5s ease-in-out infinite;}
+  @keyframes trolley{0%,100%{transform:translateX(0);}50%{transform:translateX(-62px);}}
+  .hookload{animation:bob 2.6s ease-in-out infinite;}
+  @keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(7px);}}
+  #bldgRect, #bldgTop{transition:y .9s linear, height .9s linear;}
 
-  /* concrete mixer + hourglass timer */
-  .mixer-wrap{
-    background:var(--navy-deep);
-    border-radius:9px;
-    padding:6px 10px 4px;
-    border:1px solid var(--line);
-    display:flex;
-    flex-direction:column;
-    align-items:center;
+  /* ===== results / leaderboard ===== */
+  .bigscore{
+    font-family:'Heebo',sans-serif; font-weight:900;
+    font-size:58px; text-align:center; color:var(--red); line-height:1;
   }
-  .mixer-drum{
-    transform-origin:50% 50%;
-    animation:spin 2.2s linear infinite;
+  .bigscore-l{text-align:center; font-size:15px; color:var(--muted); margin-top:6px;}
+  .rankpill{
+    display:block; width:fit-content; margin:14px auto 0;
+    background:var(--ink); color:#fff;
+    font-family:'Heebo',sans-serif; font-weight:800; font-size:15px;
+    padding:8px 18px; border-radius:22px;
   }
-  @keyframes spin{ from{transform:rotate(0deg);} to{transform:rotate(360deg);} }
-  .pour-dot{
-    animation:pour 0.9s linear infinite;
+  .stat-row{display:flex; gap:8px;}
+  .stat{
+    flex:1; text-align:center; background:rgba(255,255,255,0.07);
+    border-radius:10px; padding:10px 4px;
   }
-  .pour-dot:nth-child(2){ animation-delay:0.3s; }
-  .pour-dot:nth-child(3){ animation-delay:0.6s; }
-  @keyframes pour{
-    0%{ opacity:0; transform:translateY(0); }
-    15%{ opacity:1; }
-    85%{ opacity:1; }
-    100%{ opacity:0; transform:translateY(8px); }
+  .stat .n{font-family:'Roboto Mono',monospace; font-weight:700; font-size:22px; color:#fff;}
+  .stat .l{font-size:13px; color:var(--muted-light); margin-top:2px;}
+
+  .lb{list-style:none; display:flex; flex-direction:column; gap:8px;}
+  .lb li{
+    display:flex; align-items:center; gap:12px;
+    padding:12px 14px; border-radius:10px;
+    background:var(--paper-2); font-size:16px;
   }
-  #topSand, #bottomSand{ transition:y 1s linear, height 1s linear, fill 0.4s ease; }
-  .tape-time{
-    text-align:center;
-    font-family:'Roboto Mono', monospace;
-    font-weight:700;
-    font-size:11px;
-    color:var(--concrete);
-    margin-top:2px;
-    letter-spacing:1px;
-  }
+  .lb li.me{background:#FFE7E5; box-shadow:inset 0 0 0 2px var(--red);}
+  .lb .r{font-family:'Roboto Mono',monospace; font-weight:700; width:28px; text-align:center; color:var(--red-dark); font-size:17px;}
+  .lb .n{flex:1; font-weight:700;}
+  .lb .s{font-family:'Roboto Mono',monospace; font-weight:700; font-size:17px;}
+  .lb-empty{text-align:center; color:var(--muted); font-size:16px; padding:12px 0;}
 
   .name-input{
-    width:100%;
-    font-family:'Assistant', sans-serif;
-    font-size:17px;
-    padding:13px 14px;
-    border-radius:10px;
-    border:2px solid var(--concrete-dark);
-    text-align:right;
+    width:100%; font-family:'Assistant',sans-serif; font-size:19px;
+    padding:15px 16px; border-radius:12px;
+    border:2px solid #D6D2C9; text-align:right; color:var(--ink);
   }
-  .name-input:focus{outline:none; border-color:var(--orange);}
+  .name-input:focus{outline:none; border-color:var(--green);}
 
-  .result-score{
-    font-family:'Heebo', sans-serif;
-    font-weight:900;
-    font-size:52px;
-    text-align:center;
-    color:var(--orange);
-    line-height:1;
+  /* scoring page */
+  .score-item{display:flex; gap:12px; padding:12px 0; border-bottom:1px solid #E5E1D8; align-items:flex-start;}
+  .score-item:last-child{border-bottom:none;}
+  .score-badge{
+    flex-shrink:0; width:44px; height:44px; border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Heebo',sans-serif; font-weight:900; font-size:15px; color:#fff;
   }
-  .result-score-lbl{
-    text-align:center;
-    font-size:13px;
-    color:var(--concrete-dark);
-    letter-spacing:1px;
-    margin-top:4px;
+  .score-item h4{font-family:'Heebo',sans-serif; font-size:17px; margin-bottom:3px;}
+  .score-item p{font-size:15px; color:var(--muted); line-height:1.5;}
+  .formula{
+    background:var(--ink); color:#fff; border-radius:10px;
+    padding:14px; text-align:center; margin-top:14px;
+    font-family:'Roboto Mono',monospace; font-size:14px; line-height:1.7;
   }
-  .rank-badge{
-    display:block;
-    text-align:center;
-    font-family:'Roboto Mono', monospace;
-    font-size:14px;
-    color:var(--navy-deep);
-    background:var(--concrete);
-    border-radius:20px;
-    padding:6px 14px;
-    margin:14px auto 0;
-    width:fit-content;
-  }
+  .footnote{text-align:center; font-size:14px; color:var(--muted-light); line-height:1.5;}
 
-  .lb-list{list-style:none; display:flex; flex-direction:column; gap:8px; margin-top:14px;}
-  .lb-row{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:10px 12px;
-    border-radius:8px;
-    background:rgba(255,255,255,0.6);
+  /* ===== profile avatar (all screens) ===== */
+  .avatar{
+    position:fixed;
+    top:calc(10px + env(safe-area-inset-top));
+    left:14px;
+    width:38px; height:38px;
+    border-radius:50%;
+    object-fit:cover;
+    border:2px solid rgba(255,255,255,0.9);
+    box-shadow:0 3px 10px rgba(0,0,0,0.55);
+    z-index:100;
+    background:var(--ink-3);
   }
-  .lb-row.me{background:#FFE3CC; border:1.5px solid var(--orange);}
-  .lb-rank{
-    font-family:'Roboto Mono', monospace;
-    font-weight:700;
-    width:26px;
-    text-align:center;
-    color:var(--orange-deep);
+  @media (min-width:900px){
+    .avatar{width:46px; height:46px; top:20px; left:22px;}
   }
-  .lb-name{flex:1; font-weight:600; font-size:14px;}
-  .lb-score{font-family:'Roboto Mono', monospace; font-weight:700;}
-  .lb-empty{text-align:center; color:var(--concrete-dark); font-size:14px; padding:10px 0;}
-
-  .flash-fb{
-    text-align:center;
-    font-family:'Heebo',sans-serif;
-    font-weight:800;
-    font-size:13px;
-    height:16px;
-    margin-top:4px;
-  }
-  .flash-fb.ok{color:var(--green);}
-  .flash-fb.bad{color:var(--red);}
-
-  .row2{display:flex; gap:10px;}
-  .row2>*{flex:1;}
-  .footnote{text-align:center; font-size:12px; color:var(--concrete-dark);}
 </style>
 </head>
 <body>
+<img class="avatar" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBAUEBAYFBQUGBgYHCQ4JCQgICRINDQoOFRIWFhUSFBQXGiEcFxgfGRQUHScdHyIjJSUlFhwpLCgkKyEkJST/2wBDAQYGBgkICREJCREkGBQYJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCT/wAARCACQAJADASIAAhEBAxEB/8QAHAAAAgMBAAMAAAAAAAAAAAAABQYDBAcCAAEI/8QAQxAAAgEDAwIDBQUEBQwDAAAAAQIDBAURABIhBjETQVEUImFxgQeRobHBFSMyUjNCYtHhJDRDRGNygpKywvDxCHOi/8QAGwEAAgMBAQEAAAAAAAAAAAAAAwQBAgUABwb/xAAqEQACAgEDAwQBBAMAAAAAAAABAgARAwQhMQUSQRMiUWEykaHB8HGx0f/aAAwDAQACEQMRAD8AOU6k0wIYBCpwRzng/TWSJcqyilFTQtF7TGpMYkXIPGO3GtL6SlE3SltZT7vsikcYzwdZaiEN5+mmQYq0C3Hqu+XT3a6rlkT+QMVQf8I41TStZf8AR8/PRq62zJFTEOG4kX0PrqiLWZF3Kp41FGTciW5SsMJUUsJ8w7HI+/jUUlPVVRy9Uk3wEwI+7Xk9suEErv4FwWHurinkKEeoOMEarGSMHElRHn0kUA/iNdvJ2huxUNDDWK95tE1wpgCPBjqDDk+u5QT9NNa0P2fTDm1dTW8/7GuSUD6NGPz1Q6S+yzqPqmJKqlooaaifkVdTmNGHqoHvN9Bj461O0/YPaqGmEt16gqppMf0UDGMH5DJP3kakNUqVJiRYrR0jDf7fNbL7ezUpMDHTVdFGVkOD7u9X4+eNP067IMn01WuXQtgsVdbK+0zXJWppt84mIkDrjHbJPn3GiNS9OI9pqAMdgyka4m51VFiZEW61m5iuJOSPLgaZLScVAbPI0HqKVpq6eePa0cj7gRzkYGr9G5ikDBiQBrF1KnvNzY07DsFQte7gAYhnnP6jS9UlKpnaQFgWIABx5/8AnmNcX+uJnhGfM/mNDJZyUIz/AKU/poGHEC28LkehtKt1oqEspdYUI8lkOfrjJP36HIhQEw0yrzwwh5/5nJ0yM8DAqYY6dPORAS5PkOTjk/DVGSjJ3EsCQMkE863MWMATHy5LMVr0lVPLF4ku5QOBJKzAf8K4Go6W2s5GZWT/AOtFT8eTpgeRoHiWMJud8EtGG4x6ntqjJSxRQGQViSOF3bUIP000E2ixeP8AZ7RPY7LR22r2LUUlMIpFRgyhgDnBHB+esnEZLduNaxbKtq62Q1LnLSU5c/jrMY4yydtLpZFmGyUDtO1p/c94BgRzkajS1GE44IIyCD5aK0UWaQlxg7edXpqdZqdMDLKoxjjy0SDifV32+Wq51EFDeLjTQowCpFVuigYHYA41oX2WW7q/rG4xV1fcp5LHSygztVkSLUEc+Eu4HOfM9gNNPRFbU3009jiggaKljAnmkiVtifUdz5f4a0xaaGjpkgpokigiG1EUAAfQeZ76AuQsTYqMNjUVRlWUhAQoAA7AeWg9dPgHROpbvoHXNwdWErAdynLZ50vVUr8nJ0brRnOhUtJK/wDDE5+SnVpWUKm9TCkWAQwK6HInRNrkehxww+Yz8ddW69e1MRPhHUe83kPifh8fLUdVbp8EmFx8xjUNPaK2kroZXh2RspOWIwy/rqjoHFNLo5Q2JH1BIUrIVOQQxGD811WR9wbn/Sn8xqzXUzV1vM8ZDPbJ/Z5MHO6Jj7jZ+GCufTGqCuERj3AlP6aUx4u01HHy2Lh1V3xqAqSMCSQTjj/DUFQwAbbKgG3ae+W4HoPzOqi1kkkcjxU8jInLN3C57ZIHGqz3F0ByIRn15/M60kEzX5k1yqEigQI9ESFB2bf3hJxznHfQqF1CSRRUqDxV27iWZhz3z2/DQ291tcZ4vAc4IPEafH4DUUNv6grOVo6uTjOWRgPvPGjdwED2EzR+l3z01b2J70g/XSXTQoQc/wAvA+Hrpu6XYr0xb8I7ZpVAP36VqVHXIaFyMYyCD+ull4h35lqjRfBA3EHaRz20TgRZNowAdo/LQyMEDHhSnPbgauQM2RujkJ7DK9vLVpWbF9nfT6Wewio2fv69zUyN6KeEH0XH1J04vR7qAzZ88ap0uKa3pAoACKi/QLqxPVzJbxHs2J6nu/yHkPjoMOIDnjeQkKOB5ngDQmsNFFnxXaZv5Y+336KVEMs6lpXEUQ824GkXqb7TuiOk3aKesWvrV/1eD32z8h2+uNTYEgAniEZKqZyVoaCNPiE3t9+qFTbb5UgtKsyr6u4QfprNb3/8hb/XborFaae3Rdlknbc2P91f79It06p6sv7E3DqKtwf6kBES/hz+OqHMohhp3PibTX0K0oPtVdQxeu+pGlqvuFmjYq16tZPbAqVOsYqrAali0tRPKx/rSMWP46G1dikpwWVQ4+WDrhlBnNgYcz6H6ZqYUrHjSWGopKuMwyGJwwweQePiBoVLEy04kHvJI7FSPgRwR5HWD2yaupKgyW2eaGVFL5jJBGOeR561fpTrmW80awVrRzM8QaQgYeNgwXPHfup58s+mosA2ZFWKmgW6kpaOelX26b2x9v8Ak6KfDeNgCdx8wVJz6fTXuzvbRQoai6WmmIdioejeWYDJwSRgHyI1SpamvqqRqCOpjXEZVEKjxHXuUV8ZA7nbnB51QislxrYhLT0k8kbZw4X3ePj9NPL9iIEEnmE6679OUBeOfqW8SpKQzR0tAiqcHI5kJIwdLV36nsyIi2mbqFnJPiNVVCKrLjgBUx5+uqVy6aulc6yQxRlYwdxMq5HJGcfQ6pr0hWvT+P7VRBDwoMp3NwD2xnzxz56tY+JUKb5M0zpvxx09QCo8ISinG/wV2pnnsPIaXfD2wM+4jA7frphsNVHV2CiqISTHLAGUldpwc+XlpdD/AOTMuAcqTpdeIw/MtQj92qqPexq3ENjKWYHBBOBqCmH7lfMEalY7QQMDI1MpN6U7kQqO4BB/LSJ9ov25dO/Z3C1BJJ+0LvjIpICCyn+23ZR+Ogv2rfafP0X0DRRUhaG9V1OiKHBDw+7gnB7Hg/QH4a+VqKmkuVzU1UjzTTuXkdjktzySfidLlgLjaoTX3HrqT7TusftDlZq2ve321v4aWkYoGHoW7n8B8NBIKGOBdsMQHyHfReO3JGgDlY0UdzwBrtb/AGG3OIgXqZe37tcgH56UZyx2mljxKg3lWmtU8/AQj6avvZ4qKIy1MqRKO5Y40w2+ujraYPTR7CBkjGCNKd9tqXG5H2yZvDHIXyxoY3O8MwoWJXlvVoWQpHN4mO5QZGrFN7JcAQjI6njjvrmS4WWyIlPDSYZv9nlm+J/96kpZaStm3xJ4UyHBGMEaJVbxcmzRixebU9rrFmg91lbcp9dE+g6NpLiGVdqtxgeQznRi+UIrLbIxGJYCHGPNex1Y6DNPRq1JMmyrlQvESe6g8/LjRVPdQMVdCLIEf6e4ilpSgU7jIsgbIwMYPI754/HXEVzp0pkhkhmcBmLL4zBTk+QB4/XXLUdOVOZ6g+7kHwMD789tVGo3VN5cbO27a2PvxrUBmUyg3AHVVZSSzxLHTrT7d2MMSSOOCfnn79L7vAfIHPw0U6gjhNWu6pQYB/qnQox03nUj/lH9+rXIqbDaXP7IpRuDDwhghtwP189AVRChPu524xq/0y8rdM2tpnDymmBZgMBj8vLVBWAjyuN3bjSwh2jB0pbIbxd6OjqJDFA5LSFe+1QWIHxOMfXTVearphI5YTQUdJTUy/vKvd4Yi/tbz3+pOdKXT99axVy1sVNTVMioyKs4JVc8EjBHOMj66QPtC6mlu13p4LiZfEFUWWijVVgSLn96FHf3ce82SCDoWXJ2C6hcKd5q5e+26GrvXtNfMyyyTTo8LjkNtLDA+BRlI9dZ30xDTzXmHwkaPemGjck7GA5A+GRkfPWpU93hvds31lDUSWORtsEzJjGABlR3K5yAfhxntodSdD00N/o7tbJRU2+KdBUqveNWOMn/AB0gxIseD5jeIgkfIg+4WJ7lU+zzN4NJCm+Rh3Yny+HGgtTXWe11KUFvoY/Hztzsyfqf/et/uX2fRXmRY4y0VP2lMZwxAPkfLSxdvsuSknApYIKaFBtQs5dwvpk6qh23jrCztzEnpwyS4mClPEyuwrgj/DQ+4Qr+1CXXO3jBOtQ6T6RpReKWOWaFUjYuyk9woySfhpC6yhhhu01RTvHGN543DA51APu2hivtoyj+x4J1jLxQskQxGDk7ATnA+urApI4udo4GBgYA1zbbnEG8CpUK4AO5TlSD2Or8+xlypyDqxYmR6Yq5SWMTGRD2ZCp+uly31RWronVj7RTzqrKf5c7ePhpjgyJj8QdK9uphU3XcshEr1KKo7jBYZ1Kwd003HpilgmldamjgnY+GiiYFgMk84+mm5LXRAY9htC48vAH6nS90tFH7YxDEt4sI7N/M3rojHVS+3yxtI+1ZQAM8AYGtDNlGMXMbFiLmp3X26mikpTFQWlvHqBFu9jU4Uox/NRqwLZEhwIKBSDgYo01xM/7q1fCqX/ok0G+0uRk6RrmR2RgUwykgj3vUavcpW8B2GrpJLLQbLXEIjCNo8Z8gc+edVFnoCOLWqgjyqZNTWaNKa00SCWORViABicODwecjy1JZWoahlgmqqiF34jcBdoPkDnU3KSpPEqSQ+BG6+LGG2bi3O4jj7hpqv/2f0F5vdPR3BPDtVktqzVyr7ntMspJWJiMEgBMkfD+0dJ90uidNVVLFf5qnekGUqKaLIkYSNjknvjB9R56Y7z1zauoLTeVtFxSSrqWUim3bZNpRVXOfk3nxrC6zlzqUXEDR2JHiyB/q4XGt8TIftH6wrhfmoLZVS0lJRqibIDtVn2A4I/rKoIQA8ADtydHumbpWToyRTyU2+GKpdY+zYOHUg9xtYnB9NCOquifbquaq/aNLBLPL/m/8b8gDdwfw78a7t80lJW742AaGNQPQ4JH3H9dP4Fx5NOEx7bD9YfCzafIuRxt/E+j7TcR7Mkkbb1JK59SDjP4aB9e9RwxQ7IwA+MbtV+m7lFJSU0sYCUlwDSwEtnbKOJI/ofLSn140hqlz/CdKElfaZrIFLdwi5Df6xaqueCfwi9O0Hi+abscj48aTuqpBEwpp5xXS4yzsvEpA7kYHPPprqpuYpauWGdZGiD/woCSx+milJQyVytV1UM8MeCI/Biyy+hLN276lRvcs7lthFGguFZSykNRllYc4BxjR2z30VNYtEyOhfgBvI6kutHHUHw4Q1MgUBnklLuTjnzwNeW2309vEcqpu2EEbzkn45Pnq7VUGqsOZLcK32RzEGG9sqD6HXnSM4t9ykuAghnnhb92tQu5FJHfbkcjy0DqKgvXP4zYO4HPy/wDPw0S6dYstVJ2QyYX6aLgUFwDFdS5Ckia/0X1FUXmtlSamo4fDkgYGCMqTliOeToufENymkVGKeKDn5BdKf2Zc3CqOfOD/AKzq9dp1XqGdeMiaP8k0bUqAoH3FNMxLE/Ua52zHayDkGpU//h9UOu6KouPTVXS0kEk88jKFjQZLc51ckbMdt5/1lf8AofV6R8g55Hofrpk8VF7reZzYTCbPSCnLhBENol2k459NVI5k8ExyQoVxjKjB/u03TWu4OGSnSlqFDhB7OIz3Hlt50Em6butLHtamqUARwQY2AJOMamVg6qo6+400SwotdDHT58KtZHG7c+04PcjHGkSsu94pY1NX0bbZnk5WeKBonYAnByjY1pTRPDZqumkIVmoiBk4yffzg+usOrbhco6eIe11MAGSsYlYhQewGMjtjjUNpsedbcWR/n+JAdkYVC1BerwK+CWHpuONkkVgZC5UEHIJyR2+OtXp/snm8Waea/wBIEKd1j7YJJJy3bWF2asulwu1LSmqrJvGmRBHuPvZYa+h7zHE9tr8IrgwSnt/ZOux4Ux/jCZMjMfdOaTpprFTGOHq63yxK3tCU0jxqrPjHB35XI4OPhoD1TWTyU0VWZN0MgLjzxg8jPrpGijAWn9xcCFMcfDRFLpNHTCkMQlhZhlCcAjP4HSur05PvXmN6TU9vsfjxLlrWluNfFURoASpB/wB4/wCGjnUNvr5qP2KmgaZyBtCrzpWstfTWSuQvGymOUGSJwcj7/mNaFf8Ar6h9kRocKJF2h18iQR31m3NUPtMap46mkuDNcFdUyQVJ/hIOjtfVU60ZEcqkldBLrc1aeXL7weW9O3loBJWSTMsUe9h2AXkn4aMDe8AcgXYS/XyhngjjQNKSMLnkk/3adum7XTCgFNLPsaPkncBuJ5PfSvaLaaYiacAzEf8AJ8Bo9S3mW0LLLEIm3KFYSRq4xnyyODqVzeme8C6gMid6kR+6UkprJUzvEUnZwmFeoVBlSSOcfHR01STymWWzxyNuB3gQyMcdudyk+WkjpjqiirDEauy0VbGqkTsQY23bjjBUjHGPLTF+2+jSxV7DXU5BwTDVE4+/Oi6fqOPUEqFNjkRI4SvmMTXWnCUvi0VyXwZA42xK247WHkx/m/DXbdRW5jhvbIs/z0sn6LoJT1fSMhDQ1N9pW+LBh+Q0bpf2ZKB4HUU/wFRT5/7tOesvkH9JT0j8iJydN9Yt/nEksfr41ci/9+vT9KXk/wBNdaCP/fuAP5Z0BikZ+S7t8ydSNz5azWzZfmaS4sfxPLnSiqtFVLWulc1GrSQnxGPgsAeRjHz9NZXSVxalr4nxkFXAAxx2/u1slGitZLmjLuLxuMev7s6wemlKzPzxJCyn48Z/Ma1tM1ID8zNzrbkHxD3Qys/VVB4OWkWRmHHAIRuT8u/01p9sqOqZJHp7pJapaSWGRXenDrKvuHGEYYPOB389Zz9mm1utaDJZdu9h/awjca2qaoiRCTsBwcZbXOndwZUP2+JllwoL+Hjjt9peWERKN8zlCD6Y4+GprRY+pqrfTvbo/bZSI6ZUcspcnA3DPOtBghnn95IjsA5ZlKr95xrQ+kumIrUGulVIr1kMO+ONB7sJYcZJ7tjPyzrI6r1LD0/B6mVt/A+T/eYbFbtQAi1e/s8gm6coqC4zRVdxoIVgkrYk2++B5eqjO0Z7gZ1jXVfStxtMhUyPKpzh0OAc+oOt2td8jqep66xyt70lElVECe7BmVgPpg/TS71naknpZVYYxypHrrM6dnyZ9OmbJ+RFzRK+BMKgslZIG8SLLHjdI3b48aJ0toit67iPElxjdj8h5aOx0eOMnUz2/dGTtOMffprvJO8qFgVWCAfjqD2eqvVStDSjBY5kfyRfU/3aum3z1tStNTLl2+5R6n4ab7baKaw0YVRukPLOe7t66V1/UV069q7seJV2raQU1vp7NRJTwpj1Pmx9T8de5KGaoLSQbWcAb49wDZ+APfXk8zK+88yHsP5dRsVp03ON0nfB8j8fjrD0mry6fJ6qmyf3izEHmdwM8T7ZAysO4YY0bo6kjAGPv0m1dwqZ6kKJKpjGMe6fd/E4/DU0HU0lvcJUBJcjhF/pPw4199p8rZMau4okRcrvtLUL4GpvEGqiNx31IGGl2xbx1csZLBTLV0dRuZ8bwuAxA5XWQdN9A3q93iSlpqRxT08z09RVSe7FFgkHnzP9kZOtX6XqZqmsSy0Y/wAoqH8V5SMrTwqPecjzPkB5kjT870lDb2kp41jWB/CgiGP6RsnJ9T3Zj66zep9YbR9mm0692VuPr7MB2B2LHiZFa/sZrOnrzQ1Nd1BQCaGRJfZ6aN3kHOQCW2gZ5HnxnjWh3GQUk0dLTbIyRuaRv4j9fLS7Ddj+3now3j1LSDdI3bnvj1+Z1cuFULlcJKlWBDnbF6Kg4B+vf/w6Z1OtfRaUPqW7n+tgT/yC7QW2jNaqSORhWzv4qx/w7+QzD9B3J+Q9dOVIGHT8spJ3zYkZj3wRkfhj79IFHJJX7KWH3VYCFB2CqO5/Mk/PWhVG2K018Uf8MYRF+W3H6a8l6xrMupzd+U7n9hHcFCfN/XHVknTf2iUNasrRgUgAkXuh3tzjzHrrRYL5Q9X2L26FozIo/eIjZGcdxjyOsY+2iHbfaGU/14XTPyb/AB0mWy6Vtnl8Wiqp6dj3aGQqfw16n0jTq+ixEHxKnOVO83Kh6dra6oIhp8An+JjwNe7hbKlKxLZTRtUVcrCKNEHLsfIayyL7TOtKeIrT9QVyJjz25+8jWudA2i49O2U9Q3+qqanqO7xZiE7lmoqVvPHk8g5+C4HmdR1R10eE5GO/gfJ/vMsuoDcCFai02zpeiWip3SprB71XVjs7/wAqf2B2Hr30u1NS0jmTJwOF13XVrVc/gxnIH8RHlqzRWtHgNdWkxUMfuqqnDTN/Kv6ny+evilsE5cpsmDdoMQbFMzckn3c+vrqByNrTPkrGCx4znV2pLVc38AC8BUUcKPIDRG89LNSWmNJZilRNj9yO4HxOnNPT5kxnljAxBeGsqWOyQwpzuww5Pn289ehb0iHHJ7l25LaNNQPSgoFGxeOO2ong37YyP42C/jr0QkKt/Eif/9k=" alt="פרופיל">
 <div id="app"></div>
 
 <script>
 (function(){
   "use strict";
 
-  // ---------- data & storage helpers ----------
   const DIFF_LABEL = {easy:'קל', medium:'בינוני', hard:'קשה'};
-  const DIFF_MULT = {easy:1, medium:1.3, hard:1.6};
+  const DIFF_MULT  = {easy:1, medium:1.3, hard:1.6};
+  const COMP_SECONDS = 120;
 
   function rand(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
   function round2(n){ return Math.round(n*100)/100; }
   function fmtElev(n){ return round2(n).toFixed(2)+'+'; }
-  function fmtNum(n){
-    const r = round2(n);
-    return (r % 1 === 0) ? String(r) : r.toFixed(2).replace(/0$/,'');
-  }
-  function pick(arr){ return arr[rand(0,arr.length-1)]; }
+  function fmtNum(n){ const r=round2(n); return (r%1===0)?String(r):r.toFixed(2).replace(/0$/,''); }
+  function pick(a){ return a[rand(0,a.length-1)]; }
+  function esc(s){ return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
   const QUESTION_TYPES = [
-    // --- EASY ---
+    // ---------- EASY ----------
     { diff:'easy', gen(){
-        const a = rand(15,400), b = rand(15,400);
-        const t = pick([
+        const a=rand(15,400), b=rand(15,400);
+        const t=pick([
           (a,b)=>`לאתר הגיעו בבוקר ${a} שקי מלט, ובצהריים עוד ${b} שקים. כמה שקים הגיעו סה"כ?`,
           (a,b)=>`הריצוף בקומה א׳ הוא ${a} מ"ר, ובקומה ב׳ ${b} מ"ר. כמה מ"ר ריצוף סה"כ?`,
           (a,b)=>`הקבלן שילם ${a} ש"ח על חול ועוד ${b} ש"ח על אבן גרוס. מה סך ההוצאה?`
@@ -378,8 +369,8 @@
         return {text:t(a,b), answer:a+b};
     }},
     { diff:'easy', gen(){
-        const a = rand(200,900), b = rand(20,a-10);
-        const t = pick([
+        const a=rand(200,900), b=rand(20,a-10);
+        const t=pick([
           (a,b)=>`מתקציב של ${a} ש"ח הוצאתם ${b} ש"ח על חומרים. כמה נשאר בתקציב?`,
           (a,b)=>`במחסן היו ${a} מוטות ברזל, נלקחו ${b} לאתר. כמה מוטות נשארו במחסן?`,
           (a,b)=>`השטח הכולל לבנייה הוא ${a} מ"ר, מתוכם ${b} מ"ר כבר נבנו. כמה מ"ר נותרו?`
@@ -387,21 +378,25 @@
         return {text:t(a,b), answer:a-b};
     }},
     { diff:'easy', gen(){
-        const before = rand(80,400), after = before - rand(5,80);
-        return {text:`היו ${before} יחידות דיור מתוכננות בפרויקט, היום נותרו בתכנית ${after} יחידות. כמה יחידות בוטלו?`, answer: before-after};
+        const before=rand(80,400), after=before-rand(5,80);
+        return {text:`היו ${before} יחידות דיור מתוכננות בפרויקט, היום נותרו בתכנית ${after} יחידות. כמה יחידות בוטלו?`, answer:before-after};
     }},
     { diff:'easy', gen(){
-        const floors = rand(4,24), perFloor = rand(2,8);
-        return {text:`בבניין ${floors} קומות, ובכל קומה ${perFloor} דירות. כמה דירות יש בבניין סה"כ?`, answer: floors*perFloor};
+        const f=rand(4,24), p=rand(2,8);
+        return {text:`בבניין ${f} קומות, ובכל קומה ${p} דירות. כמה דירות יש בבניין סה"כ?`, answer:f*p};
     }},
     { diff:'easy', gen(){
-        const total = rand(500,3000), net = total - rand(50,400);
-        return {text:`השטח הבנוי הכולל של הבניין הוא ${total} מ"ר, מתוכם ${net} מ"ר שטח דירות נטו. כמה מ"ר שטחים משותפים (חדרי מדרגות, מסדרונות וכו')?`, answer: total-net};
+        const total=rand(500,3000), net=total-rand(50,400);
+        return {text:`השטח הבנוי הכולל של הבניין הוא ${total} מ"ר, מתוכם ${net} מ"ר שטח דירות נטו. כמה מ"ר שטחים משותפים?`, answer:total-net};
     }},
-    // --- MEDIUM ---
+    { diff:'easy', gen(){
+        const rooms=rand(3,6), each=rand(8,30);
+        return {text:`בדירה ${rooms} חדרים, בכל חדר ${each} מ"ר. מה שטח הדירה?`, answer:rooms*each};
+    }},
+    // ---------- MEDIUM ----------
     { diff:'medium', gen(){
-        const a = rand(2,20)*10, b = rand(2,30);
-        const t = pick([
+        const a=rand(2,20)*10, b=rand(2,30);
+        const t=pick([
           (a,b)=>`עלות ריצוף למ"ר היא ${a} ש"ח. כמה יעלה ריצוף של ${b} מ"ר?`,
           (a,b)=>`פועל אחד מניח ${a} מ"ר טיח ביום. כמה מ"ר יניחו ${b} פועלים באותו יום?`,
           (a,b)=>`משאית מובילה ${a} שקי מלט בכל נסיעה. כמה שקים ב-${b} נסיעות?`
@@ -409,8 +404,8 @@
         return {text:t(a,b), answer:a*b};
     }},
     { diff:'medium', gen(){
-        const b = rand(2,20), q = rand(4,90), a = b*q;
-        const t = pick([
+        const b=rand(2,20), q=rand(4,90), a=b*q;
+        const t=pick([
           (a,b)=>`יש לחלק ${a} מ"ר בין ${b} דירות שוות בגודלן. כמה מ"ר לדירה?`,
           (a,b)=>`תקציב של ${a} ש"ח מתחלק שווה בשווה בין ${b} קבלני משנה. כמה מקבל כל אחד?`,
           (a,b)=>`משאית הובילה בסה"כ ${a} שקי מלט ב-${b} נסיעות שוות. כמה שקים בכל נסיעה?`
@@ -418,507 +413,556 @@
         return {text:t(a,b), answer:q};
     }},
     { diff:'medium', gen(){
-        const pOpts = [5,10,15,20,25,30,40,50];
-        const p = pick(pOpts), a = rand(1,50)*20;
-        const t = pick([
+        const p=pick([5,10,15,20,25,30,40,50]), a=rand(1,50)*20;
+        const t=pick([
           (a,p)=>`עמלת התיווך היא ${p}% מעסקה בשווי ${a} ש"ח. כמה שווה העמלה?`,
           (a,p)=>`ניתנה הנחה של ${p}% על חומרי בניין בשווי ${a} ש"ח. כמה ש"ח ההנחה?`,
           (a,p)=>`מע"מ בשיעור ${p}% נוסף לעסקה של ${a} ש"ח. כמה ש"ח יתווסף?`
         ]);
-        return {text:t(a,p), answer: Math.round(a*p/100)};
+        return {text:t(a,p), answer:Math.round(a*p/100)};
     }},
     { diff:'medium', gen(){
-        const ground = round2(rand(1000,3000)/100);
-        const subMax = Math.min(1500, Math.round((ground-1)*100));
-        const water = round2(ground - rand(50, subMax)/100);
-        return {text:`גובה פני קרקע קיימת ${fmtElev(ground)}. מי תהום נמצאים בגובה ${fmtElev(water)}. מה עומק החפירה עד למי תהום?`, answer: round2(ground-water)};
+        const ground=round2(rand(1000,3000)/100);
+        const subMax=Math.min(1500, Math.round((ground-1)*100));
+        const water=round2(ground - rand(50,subMax)/100);
+        return {text:`גובה פני קרקע קיימת ${fmtElev(ground)}. מי תהום נמצאים בגובה ${fmtElev(water)}. מה עומק החפירה עד למי תהום?`, answer:round2(ground-water)};
     }},
     { diff:'medium', gen(){
-        const floorH = pick([3, 3.2, 3.5, 4]);
-        const floors = rand(5,20);
-        const maxH = round2(floorH*floors);
-        return {text:`גובה מקסימלי מותר לבנייה הוא ${fmtNum(maxH)} מ'. גובה קומה בתב"ע מוגדר ל-${fmtNum(floorH)} מ'. כמה קומות מותר לבנות?`, answer: floors};
+        const fh=pick([3,3.2,3.5,4]), fl=rand(5,20), mh=round2(fh*fl);
+        return {text:`גובה מקסימלי מותר לבנייה הוא ${fmtNum(mh)} מ'. גובה קומה בתב"ע מוגדר ל-${fmtNum(fh)} מ'. כמה קומות מותר לבנות?`, answer:fl};
     }},
     { diff:'medium', gen(){
-        const ratioOpts = [0.5,0.6,0.7,0.8,1,1.2,1.5,2];
-        const ratio = pick(ratioOpts), units = rand(3,40)*10;
-        return {text:`יש ${units} יחידות דיור, תקן החניה הוא ${fmtNum(ratio)} לדירה. כמה חניות יש לתכנן?`, answer: Math.round(units*ratio)};
+        const ratio=pick([0.5,0.6,0.7,0.8,1,1.2,1.5,2]), units=rand(3,40)*10;
+        return {text:`יש ${units} יחידות דיור, תקן החניה הוא ${fmtNum(ratio)} לדירה. כמה חניות יש לתכנן?`, answer:Math.round(units*ratio)};
     }},
     { diff:'medium', gen(){
-        const area = rand(5,400)*20;
-        const pctOpts = [40,50,60,75,80,100,120,150,175,200];
-        const p = pick(pctOpts);
-        return {text:`שטח המגרש הוא ${area} מ"ר, ואחוז הבנייה המותר הוא ${p}%. כמה מ"ר שטח בנייה מותר על המגרש?`, answer: Math.round(area*p/100)};
+        const area=rand(5,400)*20, p=pick([40,50,60,75,80,100,120,150,175,200]);
+        return {text:`שטח המגרש הוא ${area} מ"ר, ואחוז הבנייה המותר הוא ${p}%. כמה מ"ר שטח בנייה מותר על המגרש?`, answer:Math.round(area*p/100)};
     }},
     { diff:'medium', gen(){
-        const dunam = rand(2,30), rate = pick([4,6,8,10,12,15,20]);
-        return {text:`שטח המגרש הוא ${dunam} דונם, הצפיפות המותרת היא ${rate} יח"ד לדונם. כמה יחידות דיור מותר לבנות במגרש?`, answer: dunam*rate};
+        const d=rand(2,30), r=pick([4,6,8,10,12,15,20]);
+        return {text:`שטח המגרש הוא ${d} דונם, הצפיפות המותרת היא ${r} יח"ד לדונם. כמה יחידות דיור מותר לבנות?`, answer:d*r};
     }},
     { diff:'medium', gen(){
-        const units = rand(10,120), size = pick([4,5,6]);
-        return {text:`בפרויקט ${units} דירות, ובכל דירה חובה ממ"ד בשטח ${size} מ"ר. כמה מ"ר ממ"דים יש בסה"כ בפרויקט?`, answer: units*size};
+        const u=rand(10,120), s=pick([4,5,6]);
+        return {text:`בפרויקט ${u} דירות, ובכל דירה חובה ממ"ד בשטח ${s} מ"ר. כמה מ"ר ממ"דים בסה"כ בפרויקט?`, answer:u*s};
     }},
     { diff:'medium', gen(){
-        const units = rand(10,150), perUnit = rand(50,80)*10000, budget = units*perUnit;
-        return {text:`תקציב הפרויקט הוא ${budget.toLocaleString('he')} ש"ח, ובו ${units} דירות. כמה עולה כל דירה בממוצע?`, answer: perUnit};
+        const u=rand(10,150), per=rand(50,80)*10000, budget=u*per;
+        return {text:`תקציב הפרויקט הוא ${budget.toLocaleString('he')} ש"ח, ובו ${u} דירות. כמה עולה כל דירה בממוצע?`, answer:per};
     }},
-    // --- HARD ---
+    { diff:'medium', gen(){
+        const len=rand(5,40), wid=rand(5,30);
+        return {text:`מגרש בצורת מלבן באורך ${len} מ' וברוחב ${wid} מ'. מה שטח המגרש במ"ר?`, answer:len*wid};
+    }},
+    // ---------- HARD ----------
     { diff:'hard', gen(){
-        const floorH = round2(rand(1000,4000)/100);
-        const slab = pick([15,18,20,22,25]), fill = pick([5,8,10,12,15]);
-        return {text:`גובה רצפה ${fmtElev(floorH)} מ'. מה גובה תחתית התקרה אם יש תקרת בטון בעובי ${slab} ס"מ ומילוי בעובי ${fill} ס"מ?`, answer: round2(floorH - slab/100 - fill/100)};
-    }},
-    { diff:'hard', gen(){
-        const rights = rand(5,200)*20;
-        const pctUsed = pick([10,20,25,30,40,50,60,70,75,80,90]);
-        const built = Math.round(rights*pctUsed/100);
-        return {text:`זכויות הבנייה במגרש הן ${rights} מ"ר. עד כה נבנו ${built} מ"ר. כמה אחוזים מזכויות הבנייה נוצלו עד כה?`, answer: pctUsed};
+        const fh=round2(rand(1000,4000)/100);
+        const slab=pick([15,18,20,22,25]), fill=pick([5,8,10,12,15]);
+        return {text:`גובה רצפה ${fmtElev(fh)} מ'. מה גובה תחתית התקרה אם יש תקרת בטון בעובי ${slab} ס"מ ומילוי בעובי ${fill} ס"מ?`, answer:round2(fh - slab/100 - fill/100)};
     }},
     { diff:'hard', gen(){
-        const small = rand(2,15)*10, large = rand(2,15)*10;
-        const rateSmall = pick([0.5,0.6,0.7]), rateLarge = pick([1,1.2,1.5]);
-        return {text:`בפרויקט ${small} דירות קטנות בתקן חניה ${fmtNum(rateSmall)} לדירה, ו-${large} דירות גדולות בתקן חניה ${fmtNum(rateLarge)} לדירה. כמה חניות סה"כ נדרשות?`, answer: Math.round(small*rateSmall + large*rateLarge)};
+        const rights=rand(5,200)*20, p=pick([10,20,25,30,40,50,60,70,75,80,90]);
+        const built=Math.round(rights*p/100);
+        return {text:`זכויות הבנייה במגרש הן ${rights} מ"ר. עד כה נבנו ${built} מ"ר. כמה אחוזים מהזכויות נוצלו?`, answer:p};
     }},
     { diff:'hard', gen(){
-        const cost = rand(1,20)*20000;
-        const profit = pick([5,10,15,20,25,30,40,50]);
-        const sale = cost + Math.round(cost*profit/100);
-        return {text:`עלות בנייה של דירה הייתה ${cost.toLocaleString('he')} ש"ח. הדירה נמכרה ב-${sale.toLocaleString('he')} ש"ח. מה אחוז הרווח של הקבלן?`, answer: profit};
+        const s=rand(2,15)*10, l=rand(2,15)*10;
+        const rs=pick([0.5,0.6,0.7]), rl=pick([1,1.2,1.5]);
+        return {text:`בפרויקט ${s} דירות קטנות בתקן חניה ${fmtNum(rs)} לדירה, ו-${l} דירות גדולות בתקן חניה ${fmtNum(rl)} לדירה. כמה חניות סה"כ נדרשות?`, answer:Math.round(s*rs+l*rl)};
+    }},
+    { diff:'hard', gen(){
+        const cost=rand(1,20)*20000, profit=pick([5,10,15,20,25,30,40,50]);
+        const sale=cost+Math.round(cost*profit/100);
+        return {text:`עלות בנייה של דירה הייתה ${cost.toLocaleString('he')} ש"ח. הדירה נמכרה ב-${sale.toLocaleString('he')} ש"ח. מה אחוז הרווח?`, answer:profit};
+    }},
+    { diff:'hard', gen(){
+        const len=rand(10,40), wid=rand(5,20), dep=pick([0.2,0.25,0.3,0.4,0.5]);
+        return {text:`יש לצקת רצפת בטון באורך ${len} מ', רוחב ${wid} מ' ובעובי ${fmtNum(dep)} מ'. כמה מ"ק בטון נדרשים?`, answer:round2(len*wid*dep)};
+    }},
+    { diff:'hard', gen(){
+        const base=round2(rand(500,2500)/100), floors=rand(3,12), fh=pick([2.8,3,3.2,3.5]);
+        return {text:`גובה רצפת קומת הקרקע ${fmtElev(base)} מ'. בבניין ${floors} קומות בגובה ${fmtNum(fh)} מ' כל אחת. מה גובה רצפת הקומה העליונה?`, answer:round2(base+floors*fh)};
     }}
   ];
 
-  function makeQuestion(diffFilter){
-    const pool = diffFilter ? QUESTION_TYPES.filter(q => q.diff===diffFilter) : QUESTION_TYPES;
+  function makeQuestion(diff){
+    const pool = diff ? QUESTION_TYPES.filter(q=>q.diff===diff) : QUESTION_TYPES;
     const qt = pick(pool);
-    const {text, answer} = qt.gen();
-    return {diff: qt.diff, text, answer};
+    const {text,answer} = qt.gen();
+    return {diff:qt.diff, text, answer};
   }
 
-  // week resets Saturday 23:59:59 -> new week starts Sunday 00:00 (local time)
+  // ---------- week: Sunday 00:00 -> Saturday 23:59 ----------
   function getWeekId(d){
-    const dt = new Date(d.getFullYear(), d.getMonth(), d.getDate());
-    dt.setDate(dt.getDate() - dt.getDay()); // back up to this week's Sunday
-    const y = dt.getFullYear(), m = String(dt.getMonth()+1).padStart(2,'0'), dd = String(dt.getDate()).padStart(2,'0');
-    return `${y}-${m}-${dd}`;
+    const dt=new Date(d.getFullYear(),d.getMonth(),d.getDate());
+    dt.setDate(dt.getDate()-dt.getDay());
+    return `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;
   }
   const weekId = getWeekId(new Date());
-  const weekStartDate = new Date(weekId);
-  const weekLabel = weekStartDate.toLocaleDateString('he', {day:'numeric', month:'numeric'});
+  const weekLabel = new Date(weekId).toLocaleDateString('he',{day:'numeric',month:'numeric'});
 
-  async function storGet(key, shared){
-    try{ const r = await window.storage.get(key, !!shared); return r ? r.value : null; }
-    catch(e){ return null; }
-  }
-  async function storSet(key, value, shared){
-    try{ await window.storage.set(key, value, !!shared); return true; }
-    catch(e){ return false; }
-  }
+  async function storGet(k,sh){ try{const r=await window.storage.get(k,!!sh); return r?r.value:null;}catch(e){return null;} }
+  async function storSet(k,v,sh){ try{await window.storage.set(k,v,!!sh); return true;}catch(e){return false;} }
   async function getLeaderboard(){
-    const raw = await storGet('leaderboard:'+weekId, true);
-    try{ return raw ? JSON.parse(raw) : []; }catch(e){ return []; }
+    const raw=await storGet('leaderboard:'+weekId,true);
+    try{ return raw?JSON.parse(raw):[]; }catch(e){ return []; }
   }
-  async function saveLeaderboard(arr){ await storSet('leaderboard:'+weekId, JSON.stringify(arr), true); }
-  async function getPlayerName(){ return await storGet('player-name', false); }
-  async function setPlayerName(n){ await storSet('player-name', n, false); }
+  async function saveLeaderboard(a){ await storSet('leaderboard:'+weekId, JSON.stringify(a), true); }
+  async function getPlayerName(){ return await storGet('player-name',false); }
+  async function setPlayerName(n){ await storSet('player-name',n,false); }
 
-  // ---------- app state ----------
-  const app = document.getElementById('app');
-  let state = { screen:'home' };
+  const app=document.getElementById('app');
+  let state={screen:'home'};
 
-  function esc(s){
-    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  function brandbar(){
+    return `<div class="brandbar">
+      <div class="brandmark">א.ב</div>
+      <div class="brandname">מתמטיקה שימושית</div>
+    </div>
+    <div class="rule"></div>`;
   }
 
   function render(){
-    if(state.screen==='home') return renderHome();
-    if(state.screen==='practice') return renderPlay(false);
-    if(state.screen==='practice-summary') return renderPracticeSummary();
-    if(state.screen==='comp-name') return renderCompName();
-    if(state.screen==='comp-already') return renderCompAlready();
-    if(state.screen==='comp-play') return renderPlay(true);
-    if(state.screen==='comp-result') return renderCompResult();
-    if(state.screen==='leaderboard') return renderLeaderboardScreen();
+    app.classList.toggle('wide', state.screen==='home');
+    switch(state.screen){
+      case 'home': return renderHome();
+      case 'practice': return renderPlay(false);
+      case 'practice-summary': return renderPracticeSummary();
+      case 'comp-name': return renderCompName();
+      case 'comp-already': return renderCompAlready();
+      case 'comp-play': return renderPlay(true);
+      case 'comp-result': return renderCompResult();
+      case 'leaderboard': return renderLeaderboardScreen();
+      case 'scoring': return renderScoring();
+    }
   }
 
-  // ---------- HOME ----------
+  // ================= HOME =================
   function renderHome(){
     app.innerHTML = `
-      <div class="eyebrow">אתר עבודה · חישוב מהיר</div>
-      <h1 class="title">לוח חשבון אתר</h1>
-      <p class="subtitle">תרגול חיבור, חיסור, כפל, חילוק ואחוזים — בדיוק החישובים של היום-יום בבנייה ובנדל"ן.</p>
-
-      <div class="level-label-row">תרגול חופשי לפי רמה</div>
-      <div class="level-row">
-        <button class="level-btn easy" data-diff="easy">קל</button>
-        <button class="level-btn medium" data-diff="medium">בינוני</button>
-        <button class="level-btn hard" data-diff="hard">קשה</button>
-      </div>
-
-      <button class="mode-btn" data-go="comp-start">
-        <div>
-          <div class="mode-label">תחרות שבועית</div>
-          <div class="mode-desc">2 דקות, כל הנושאים והרמות מעורבבים, ניסיון אחד לשבוע</div>
+      ${brandbar()}
+      <div class="home-grid">
+        <div class="home-hero" style="display:flex;flex-direction:column;gap:12px;">
+          <h1 class="title">א.ב. מתמטיקה שימושית</h1>
+          <p class="lead">בואו להחזיר את המח לכושר, ולהיות הראשונים ששולפים תשובות נכונות בפגישות בעבודה, עם חברים ועם המשפחה.</p>
+          <p class="sub">תרגול חיבור, חיסור, כפל, חילוק ואחוזים — בדיוק החישובים של היום-יום בבנייה ובנדל"ן.</p>
         </div>
-        <div class="arrow">◂</div>
-      </button>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div class="panel green-top">
+            <div class="panel-title">תרגול</div>
+            <div class="panel-desc">בלי לחץ זמן. בחרו רמה — הנושאים מעורבבים.</div>
+            <div class="level-row">
+              <button class="level-btn easy" data-diff="easy">קל</button>
+              <button class="level-btn medium" data-diff="medium">בינוני</button>
+              <button class="level-btn hard" data-diff="hard">קשה</button>
+            </div>
+          </div>
 
-      <button class="ghost-btn" data-go="leaderboard">טבלת המובילים השבוע ›</button>
+          <div class="panel">
+            <div class="panel-title">תחרות שבועית</div>
+            <div class="panel-desc">2 דקות, כל הנושאים והרמות מעורבבים. ניסיון אחד בלבד לכל כינוי בשבוע. הטבלה מתאפסת בשבת בחצות.</div>
+            <button class="cta red" id="compBtn">כניסה לתחרות</button>
+          </div>
+
+          <button class="ghost" id="lbBtn">טבלת המובילים השבוע</button>
+          <button class="ghost small" id="scoringBtn">איך מחושב הניקוד?</button>
+        </div>
+      </div>
     `;
-    app.querySelectorAll('.level-btn').forEach(btn => {
-      btn.onclick = () => startPractice(btn.dataset.diff);
-    });
-    app.querySelector('[data-go="comp-start"]').onclick = startCompetitionFlow;
-    app.querySelector('[data-go="leaderboard"]').onclick = () => { state.screen='leaderboard'; render(); };
+    app.querySelectorAll('.level-btn').forEach(b=>b.onclick=()=>startPractice(b.dataset.diff));
+    app.querySelector('#compBtn').onclick=startCompetitionFlow;
+    app.querySelector('#lbBtn').onclick=()=>{state.screen='leaderboard'; render();};
+    app.querySelector('#scoringBtn').onclick=()=>{state.screen='scoring'; render();};
   }
 
-  // ---------- shared play engine ----------
-  function newRoundState(competition, diff){
-    return {
-      competition,
-      diff: diff || null,
-      score:0, streak:0, answered:0, correct:0,
-      q: makeQuestion(diff),
-      qStart: performance.now(),
-      timeLeft: competition ? 120 : null,
-      timerId: null,
-      locked:false
-    };
+  // ================= SCORING PAGE =================
+  function renderScoring(){
+    app.innerHTML = `
+      ${brandbar()}
+      <h1 class="title">שיטת הניקוד</h1>
+      <div class="panel">
+        <div class="score-item">
+          <div class="score-badge" style="background:var(--ink)">מהירות</div>
+          <div>
+            <h4>מהירות = נקודות</h4>
+            <p>כל תשובה נכונה מתחילה ב-100 נקודות, ויורדות כ-12 נקודות על כל שנייה שחולפת. המינימום לתשובה נכונה הוא 20 נקודות — גם אם לקח זמן.</p>
+          </div>
+        </div>
+        <div class="score-item">
+          <div class="score-badge" style="background:var(--red)">רמה</div>
+          <div>
+            <h4>מכפיל לפי רמת קושי</h4>
+            <p>קל ×1 · בינוני ×1.3 · קשה ×1.6. בתחרות מגיעות שאלות מכל הרמות, אז שאלה קשה שווה יותר.</p>
+          </div>
+        </div>
+        <div class="score-item">
+          <div class="score-badge" style="background:var(--gold);color:#2A2000">רצף</div>
+          <div>
+            <h4>בונוס רצף</h4>
+            <p>כל תשובה נכונה ברצף מוסיפה 5 נקודות בונוס, עד תקרה של 50. טעות אחת מאפסת את הרצף.</p>
+          </div>
+        </div>
+        <div class="score-item">
+          <div class="score-badge" style="background:var(--green)">ניסיון</div>
+          <div>
+            <h4>ניסיון אחד לכל שאלה</h4>
+            <p>אין אפשרות לתקן תשובה. טעות שווה 0 נקודות ומאפסת את הרצף — עדיף לוודא לפני שמאשרים.</p>
+          </div>
+        </div>
+        <div class="formula">
+          ניקוד = (100 − שניות×12) × מכפיל רמה + בונוס רצף
+        </div>
+      </div>
+      <button class="ghost" id="back">חזרה לדף הבית</button>
+    `;
+    app.querySelector('#back').onclick=()=>{state.screen='home'; render();};
+  }
+
+  // ================= PLAY ENGINE =================
+  function newRound(competition, diff){
+    return {competition, diff:diff||null, score:0, streak:0, answered:0, correct:0,
+            q:makeQuestion(diff), qStart:performance.now(),
+            timeLeft: competition?COMP_SECONDS:null, timerId:null, locked:false};
   }
 
   function startPractice(diff){
     state.screen='practice';
-    state.round = newRoundState(false, diff);
+    state.round=newRound(false,diff);
     render();
   }
 
   async function startCompetitionFlow(){
-    const name = await getPlayerName();
-    const lb = await getLeaderboard();
-    if(name && lb.find(r => r.name.toLowerCase()===name.toLowerCase())){
-      state.screen='comp-already';
-      state.compName = name;
-      state.lb = lb;
-      render();
-      return;
+    const name=await getPlayerName();
+    const lb=await getLeaderboard();
+    if(name && lb.find(r=>r.name.toLowerCase()===name.toLowerCase())){
+      state.compName=name; state.lb=lb; state.screen='comp-already'; render(); return;
     }
-    if(name){
-      state.compName = name;
-      beginCompetitionPlay();
-    } else {
-      state.screen='comp-name';
-      render();
-    }
+    state.screen='comp-name'; render();
   }
 
   function renderCompName(){
     app.innerHTML = `
-      <div class="eyebrow">תחרות שבועית</div>
-      <h1 class="title">איך קוראים לך בטבלה?</h1>
-      <div class="card">
-        <input class="name-input" id="nameField" maxlength="18" placeholder="שם או כינוי לתחרות" />
+      ${brandbar()}
+      <h1 class="title">כניסה לתחרות</h1>
+      <p class="sub">2 דקות · ניסיון אחד לשבוע · הכינוי נרשם לטבלה מרגע ההתחלה.</p>
+      <div class="panel">
+        <div class="panel-title">הכינוי שלך בטבלה</div>
+        <div class="panel-desc">כל כינוי יכול להתחרות פעם אחת בשבוע. אם תפרוש באמצע — הכינוי יישאר בטבלה עם 0 נקודות.</div>
+        <input class="name-input" id="nameField" maxlength="18" placeholder="שם או כינוי" />
       </div>
-      <button class="primary-btn" id="startCompBtn">התחל תחרות · 3 דקות</button>
-      <button class="ghost-btn" data-go="home">חזרה</button>
+      <button class="cta red" id="go">התחל · 2 דקות</button>
+      <button class="ghost" id="back">ביטול</button>
     `;
-    const field = app.querySelector('#nameField');
-    const btn = app.querySelector('#startCompBtn');
-    field.focus();
-    field.addEventListener('keydown', e => { if(e.key==='Enter') btn.click(); });
-    btn.onclick = async () => {
-      const v = field.value.trim();
-      if(!v) { field.style.borderColor='var(--red)'; return; }
+    const f=app.querySelector('#nameField'), g=app.querySelector('#go');
+    f.focus();
+    f.addEventListener('keydown',e=>{ if(e.key==='Enter') g.click(); });
+    g.onclick=async()=>{
+      const v=f.value.trim();
+      if(!v){ f.style.borderColor='var(--red)'; return; }
+      const lb=await getLeaderboard();
+      if(lb.find(r=>r.name.toLowerCase()===v.toLowerCase())){
+        state.compName=v; state.lb=lb; state.screen='comp-already'; render(); return;
+      }
       await setPlayerName(v);
-      state.compName = v;
-      beginCompetitionPlay();
+      state.compName=v;
+      // reserve the slot immediately with 0 — quitting or closing leaves 0
+      lb.push({name:v, score:0, ts:Date.now()});
+      await saveLeaderboard(lb);
+      beginCompetition();
     };
-    app.querySelector('[data-go="home"]').onclick = () => { state.screen='home'; render(); };
+    app.querySelector('#back').onclick=()=>{state.screen='home'; render();};
   }
 
   function renderCompAlready(){
-    const lb = state.lb.slice().sort((a,b)=>b.score-a.score);
-    const idx = lb.findIndex(r => r.name.toLowerCase()===state.compName.toLowerCase());
+    const lb=state.lb.slice().sort((a,b)=>b.score-a.score);
+    const i=lb.findIndex(r=>r.name.toLowerCase()===state.compName.toLowerCase());
     app.innerHTML = `
-      <div class="eyebrow">תחרות שבועית</div>
+      ${brandbar()}
       <h1 class="title">כבר התחרית השבוע</h1>
-      <p class="subtitle">ניסיון אחד לשבוע — הניקוד שלך נשמר. חוזרים ביום א׳ הקרוב לתחרות חדשה.</p>
-      <div class="card">
-        <div class="result-score">${lb[idx].score}</div>
-        <div class="result-score-lbl">הניקוד שלך השבוע</div>
-        <div class="rank-badge">מקום ${idx+1} מתוך ${lb.length}</div>
+      <p class="sub">ניסיון אחד לכל כינוי בשבוע. ביום ראשון נפתחת תחרות חדשה.</p>
+      <div class="panel">
+        <div class="bigscore">${lb[i].score}</div>
+        <div class="bigscore-l">הניקוד שלך השבוע</div>
+        <div class="rankpill">מקום ${i+1} מתוך ${lb.length}</div>
       </div>
-      <button class="ghost-btn" data-go="leaderboard">לצפייה בטבלה המלאה</button>
-      <button class="ghost-btn" data-go="home">חזרה לבית</button>
+      <button class="ghost" id="lb">לטבלה המלאה</button>
+      <button class="ghost" id="home">חזרה לדף הבית</button>
     `;
-    app.querySelector('[data-go="leaderboard"]').onclick = () => { state.screen='leaderboard'; render(); };
-    app.querySelector('[data-go="home"]').onclick = () => { state.screen='home'; render(); };
+    app.querySelector('#lb').onclick=()=>{state.screen='leaderboard'; render();};
+    app.querySelector('#home').onclick=()=>{state.screen='home'; render();};
   }
 
-  function beginCompetitionPlay(){
+  function beginCompetition(){
     state.screen='comp-play';
-    state.round = newRoundState(true);
+    state.round=newRound(true);
     render();
-    tickTimer();
-  }
-
-  function tickTimer(){
-    const r = state.round;
-    r.timerId = setInterval(() => {
-      r.timeLeft -= 1;
+    updateTimerVisual();
+    state.round.timerId=setInterval(()=>{
+      state.round.timeLeft--;
       updateTimerVisual();
-      if(r.timeLeft <= 0){
-        clearInterval(r.timerId);
-        endCompetition();
-      }
-    }, 1000);
+      if(state.round.timeLeft<=0){ clearInterval(state.round.timerId); finishCompetition(); }
+    },1000);
   }
 
-  function updateTimerVisual(){
-    const topSand = document.getElementById('topSand');
-    const botSand = document.getElementById('bottomSand');
-    const label = document.getElementById('tapeTime');
-    if(!topSand || !botSand || !label) return;
-    const frac = Math.max(0, state.round.timeLeft/120);
-    const danger = state.round.timeLeft <= 30;
-    const sandColor = danger ? 'var(--red)' : 'var(--concrete)';
-    const topH = 22*frac;
-    topSand.setAttribute('y', 28-topH);
-    topSand.setAttribute('height', topH);
-    topSand.setAttribute('fill', sandColor);
-    const botH = 22*(1-frac);
-    botSand.setAttribute('y', 30);
-    botSand.setAttribute('height', botH);
-    botSand.setAttribute('fill', sandColor);
-    const m = Math.floor(state.round.timeLeft/60), s = state.round.timeLeft%60;
-    label.textContent = `${m}:${String(s).padStart(2,'0')} נותרו`;
-    label.style.color = danger ? 'var(--red)' : 'var(--concrete)';
-  }
-
-  async function endCompetition(){
-    const lb = await getLeaderboard();
-    lb.push({name: state.compName, score: state.round.score, ts: Date.now()});
+  async function finishCompetition(){
+    const lb=await getLeaderboard();
+    const e=lb.find(r=>r.name.toLowerCase()===state.compName.toLowerCase());
+    if(e) e.score=state.round.score; else lb.push({name:state.compName, score:state.round.score, ts:Date.now()});
     await saveLeaderboard(lb);
-    state.finalLb = lb;
+    state.finalLb=lb;
     state.screen='comp-result';
     render();
   }
 
-  function mixerTimerHtml(){
+  function quitCompetition(){
+    if(!confirm('לפרוש מהתחרות? הכינוי שלך יישאר בטבלה עם 0 נקודות, ולא תוכל להתחרות שוב השבוע.')) return;
+    clearInterval(state.round.timerId);
+    state.round.score=0;
+    state.quit=true;
+    finishCompetition();
+  }
+
+  // ---------- crane timer ----------
+  function craneHtml(){
     return `
-      <div class="mixer-wrap">
-        <svg width="76" height="58" viewBox="0 0 100 76">
-          <g class="mixer-drum" transform="translate(50,14)">
-            <ellipse cx="0" cy="0" rx="16" ry="10" fill="var(--orange)"/>
-            <path d="M -16,0 A16,10 0 0 0 16,0" fill="none" stroke="var(--orange-deep)" stroke-width="2"/>
-            <line x1="-11" y1="-6" x2="11" y2="6" stroke="var(--orange-deep)" stroke-width="1.5"/>
-            <line x1="11" y1="-6" x2="-11" y2="6" stroke="var(--orange-deep)" stroke-width="1.5"/>
-          </g>
-          <rect x="38" y="18" width="4" height="6" fill="var(--concrete-dark)"/>
-          <circle class="pour-dot" cx="50" cy="26" r="1.6" fill="var(--concrete)"/>
-          <circle class="pour-dot" cx="50" cy="26" r="1.6" fill="var(--concrete)"/>
-          <circle class="pour-dot" cx="50" cy="26" r="1.6" fill="var(--concrete)"/>
+      <div class="crane-wrap">
+        <svg class="crane-svg" viewBox="0 0 260 140">
+          <rect x="0" y="130" width="260" height="6" fill="#2B2B2B"/>
+          <rect x="0" y="130" width="260" height="2" fill="var(--gold)"/>
           <defs>
-            <clipPath id="topClip"><polygon points="20,6 80,6 50,28"/></clipPath>
-            <clipPath id="bottomClip"><polygon points="20,52 80,52 50,30"/></clipPath>
+            <pattern id="fl" width="18" height="14" patternUnits="userSpaceOnUse">
+              <rect width="18" height="14" fill="#D9D5CC"/>
+              <rect x="3" y="3" width="12" height="7" fill="#3E6C8E"/>
+              <rect x="0" y="12.5" width="18" height="1.5" fill="#A9A498"/>
+            </pattern>
           </defs>
-          <rect id="topSand" x="10" y="6" width="80" height="22" clip-path="url(#topClip)" fill="var(--concrete)"/>
-          <rect id="bottomSand" x="10" y="30" width="80" height="0" clip-path="url(#bottomClip)" fill="var(--concrete)"/>
-          <polygon points="20,6 80,6 50,28" fill="none" stroke="var(--line)" stroke-width="2"/>
-          <polygon points="20,52 80,52 50,30" fill="none" stroke="var(--line)" stroke-width="2"/>
+          <rect id="bldgRect" x="26" y="130" width="96" height="0" fill="url(#fl)"/>
+          <rect id="bldgTop" x="22" y="128" width="104" height="0" fill="var(--red)"/>
+          <g stroke="var(--red)" stroke-width="3" fill="none" stroke-linecap="round">
+            <line x1="184" y1="130" x2="184" y2="26"/>
+            <line x1="202" y1="130" x2="202" y2="26"/>
+            <line x1="184" y1="122" x2="202" y2="104"/><line x1="202" y1="122" x2="184" y2="104"/>
+            <line x1="184" y1="104" x2="202" y2="86"/><line x1="202" y1="104" x2="184" y2="86"/>
+            <line x1="184" y1="86" x2="202" y2="68"/><line x1="202" y1="86" x2="184" y2="68"/>
+            <line x1="184" y1="68" x2="202" y2="50"/><line x1="202" y1="68" x2="184" y2="50"/>
+            <line x1="184" y1="50" x2="202" y2="32"/><line x1="202" y1="50" x2="184" y2="32"/>
+          </g>
+          <rect x="178" y="14" width="30" height="12" rx="2" fill="var(--red)"/>
+          <line x1="40" y1="20" x2="250" y2="20" stroke="var(--red)" stroke-width="4" stroke-linecap="round"/>
+          <line x1="40" y1="20" x2="193" y2="6" stroke="var(--red)" stroke-width="1.6"/>
+          <line x1="250" y1="20" x2="193" y2="6" stroke="var(--red)" stroke-width="1.6"/>
+          <line x1="193" y1="6" x2="193" y2="20" stroke="var(--red)" stroke-width="1.6"/>
+          <rect x="238" y="14" width="20" height="14" rx="2" fill="#4A4A4A"/>
+          <g class="trolley" transform="translate(120,0)">
+            <rect x="-7" y="18" width="14" height="6" rx="1.5" fill="#4A4A4A"/>
+            <g class="hookload">
+              <line x1="0" y1="24" x2="0" y2="64" stroke="#8A8A8A" stroke-width="1.5"/>
+              <path d="M -11,64 L 11,64 L 8,80 L -8,80 Z" fill="var(--green)"/>
+              <rect x="-11" y="62" width="22" height="4" rx="1" fill="#0A5C31"/>
+            </g>
+          </g>
         </svg>
-        <div class="tape-time" id="tapeTime">2:00 נותרו</div>
+        <div class="crane-clock" id="clock">
+          <div class="t" id="clockT">2:00</div>
+          <div class="l">נותרו</div>
+        </div>
       </div>`;
   }
 
-  // ---------- PLAY SCREEN (shared by practice & competition) ----------
-  function renderPlay(competition){
-    const r = state.round;
-    app.innerHTML = `
-      ${competition ? mixerTimerHtml() : ''}
-
-      <div class="stat-row">
-        <div class="stat"><div class="num" id="scoreNum">${r.score}</div><div class="lbl">ניקוד</div></div>
-        <div class="stat"><div class="num" id="streakNum">${r.streak}</div><div class="lbl">רצף</div></div>
-        <div class="stat"><div class="num" id="answeredNum">${r.answered}</div><div class="lbl">שאלות</div></div>
-      </div>
-
-      <div class="ticket">
-        <div class="ticket-head">
-          <span>דף עבודה #<span id="qnum">${r.answered+1}</span></span>
-          <span class="streak">${r.streak>0 ? 'רצף ×'+r.streak : ''}</span>
-        </div>
-        <div class="ticket-body">
-          <div class="op-tag ${r.q.diff}" id="opTag">${DIFF_LABEL[r.q.diff]}</div>
-          <div class="question-text" id="qText">${esc(r.q.text)}</div>
-        </div>
-        <div class="ticket-foot">
-          <div class="answer-display empty" id="ansDisplay">הקש תשובה</div>
-          <div class="flash-fb" id="flashFb"></div>
-          <div class="keypad" id="keypad">
-            <button class="key" data-k="1">1</button>
-            <button class="key" data-k="2">2</button>
-            <button class="key" data-k="3">3</button>
-            <button class="key" data-k=".">.</button>
-            <button class="key" data-k="4">4</button>
-            <button class="key" data-k="5">5</button>
-            <button class="key" data-k="6">6</button>
-            <button class="key del" data-k="del">⌫</button>
-            <button class="key" data-k="7">7</button>
-            <button class="key" data-k="8">8</button>
-            <button class="key" data-k="9">9</button>
-            <button class="key" data-k="0">0</button>
-            <button class="key go" data-k="go">אישור ✓</button>
-          </div>
-        </div>
-      </div>
-
-      ${!competition ? '<button class="ghost-btn" id="endPracticeBtn">סיים תרגול</button>' : ''}
-    `;
-
-    state.typed = '';
-    app.querySelector('#keypad').addEventListener('click', e => {
-      const btn = e.target.closest('.key');
-      if(!btn || btn.disabled) return;
-      const k = btn.dataset.k;
-      if(k==='go'){ submitAnswer(competition); return; }
-      if(k==='del'){ state.typed = state.typed.slice(0,-1); }
-      else if(k==='.'){ if(!state.typed.includes('.')) state.typed += (state.typed ? '.' : '0.'); }
-      else if(state.typed.length < 9){ state.typed += k; }
-      updateAnswerDisplay();
-    });
-
-    if(!competition){
-      app.querySelector('#endPracticeBtn').onclick = () => {
-        state.screen='practice-summary';
-        render();
-      };
-    }
+  function updateTimerVisual(){
+    const r=state.round;
+    const b=document.getElementById('bldgRect'), top=document.getElementById('bldgTop');
+    const t=document.getElementById('clockT'), c=document.getElementById('clock');
+    if(!b||!t) return;
+    const done=1-Math.max(0,r.timeLeft/COMP_SECONDS);   // building grows as time runs out
+    const h=Math.round(104*done);
+    b.setAttribute('y',130-h); b.setAttribute('height',h);
+    top.setAttribute('y',128-h); top.setAttribute('height', h>4?4:0);
+    const m=Math.floor(Math.max(0,r.timeLeft)/60), s=Math.max(0,r.timeLeft)%60;
+    t.textContent=`${m}:${String(s).padStart(2,'0')}`;
+    c.classList.toggle('danger', r.timeLeft<=20);
   }
 
-  function updateAnswerDisplay(){
-    const disp = document.getElementById('ansDisplay');
-    if(!disp) return;
-    if(state.typed){
-      disp.textContent = state.typed;
-      disp.classList.remove('empty');
-    } else {
-      disp.textContent = 'הקש תשובה';
-      disp.classList.add('empty');
+  // ---------- play screen ----------
+  function renderPlay(competition){
+    const r=state.round;
+    app.innerHTML = `
+      ${competition ? craneHtml() : ''}
+      <div class="qhead">
+        <span>שאלה ${r.answered+1}</span>
+        <span class="streak">${r.streak>0?'רצף ×'+r.streak:''}</span>
+        <span>ניקוד ${r.score}</span>
+      </div>
+
+      <div class="qcard">
+        <div class="diff-tag ${r.q.diff}">${DIFF_LABEL[r.q.diff]}</div>
+        <div class="qtext">${esc(r.q.text)}</div>
+      </div>
+
+      <div class="answer-bar empty" id="ans">הקישו את התשובה</div>
+      <div class="fb" id="fb"></div>
+
+      <div class="keypad" id="pad">
+        <button class="key" data-k="1">1</button>
+        <button class="key" data-k="2">2</button>
+        <button class="key" data-k="3">3</button>
+        <button class="key" data-k="4">4</button>
+        <button class="key" data-k="5">5</button>
+        <button class="key" data-k="6">6</button>
+        <button class="key" data-k="7">7</button>
+        <button class="key" data-k="8">8</button>
+        <button class="key" data-k="9">9</button>
+        <button class="key" data-k=".">.</button>
+        <button class="key" data-k="0">0</button>
+        <button class="key" data-k="/">/</button>
+      </div>
+      <div class="action-row">
+        <button class="action-key del" data-k="del"><span class="glyph">⌫</span>מחיקה</button>
+        <button class="action-key ok" data-k="go"><span class="glyph">✓</span>אישור</button>
+      </div>
+
+      ${competition
+        ? '<button class="ghost small" id="quit">פרישה ויציאה מהתחרות</button>'
+        : '<button class="ghost small" id="endPractice">סיום התרגול</button>'}
+    `;
+
+    state.typed='';
+    const handler=e=>{
+      const btn=e.target.closest('[data-k]');
+      if(!btn||btn.disabled) return;
+      const k=btn.dataset.k;
+      if(k==='go') return submitAnswer(competition);
+      if(k==='del') state.typed=state.typed.slice(0,-1);
+      else if(k==='.'){ const last=state.typed.split('/').pop(); if(!last.includes('.')) state.typed += last===''?'0.':'.'; }
+      else if(k==='/'){ if(state.typed && !state.typed.includes('/')) state.typed+='/'; }
+      else if(state.typed.length<12) state.typed+=k;
+      updateAns();
+    };
+    app.querySelector('#pad').addEventListener('click',handler);
+    app.querySelector('.action-row').addEventListener('click',handler);
+
+    if(competition) app.querySelector('#quit').onclick=quitCompetition;
+    else app.querySelector('#endPractice').onclick=()=>{state.screen='practice-summary'; render();};
+  }
+
+  function updateAns(){
+    const d=document.getElementById('ans');
+    if(!d) return;
+    if(state.typed){ d.textContent=state.typed; d.classList.remove('empty'); }
+    else { d.textContent='הקישו את התשובה'; d.classList.add('empty'); }
+  }
+
+  function parseTyped(s){
+    if(s.includes('/')){
+      const [a,b]=s.split('/');
+      const na=parseFloat(a), nb=parseFloat(b);
+      if(isNaN(na)||isNaN(nb)||nb===0) return NaN;
+      return na/nb;
     }
+    return parseFloat(s);
   }
 
   function submitAnswer(competition){
-    const r = state.round;
-    if(r.locked) return;
+    const r=state.round;
+    if(r.locked||!state.typed) return;
     if(competition && r.timeLeft<=0) return;
-    if(!state.typed) return;
-    r.locked = true;
+    r.locked=true;
 
-    const val = parseFloat(state.typed);
-    const elapsedSec = (performance.now() - r.qStart)/1000;
-    const isCorrect = !isNaN(val) && Math.abs(val - r.q.answer) < 0.005;
+    const val=parseTyped(state.typed);
+    const secs=(performance.now()-r.qStart)/1000;
+    const ok=!isNaN(val) && Math.abs(val-r.q.answer)<0.005;
 
-    let pts = 0;
-    if(isCorrect){
-      const base = Math.max(20, Math.round((100 - elapsedSec*12) * DIFF_MULT[r.q.diff]));
-      const streakBonus = Math.min(50, r.streak*5);
-      pts = base + streakBonus;
-      r.streak += 1;
-      r.correct += 1;
-    } else {
-      r.streak = 0;
-    }
-    r.score += pts;
-    r.answered += 1;
+    let pts=0;
+    if(ok){
+      pts=Math.max(20,Math.round((100-secs*12)*DIFF_MULT[r.q.diff])) + Math.min(50,r.streak*5);
+      r.streak++; r.correct++;
+    } else r.streak=0;
+    r.score+=pts; r.answered++;
 
-    const disp = document.getElementById('ansDisplay');
-    disp.classList.add(isCorrect ? 'correct' : 'wrong');
-    app.querySelectorAll('.key').forEach(k => k.disabled = true);
-    const fb = document.getElementById('flashFb');
-    fb.className = 'flash-fb ' + (isCorrect ? 'ok' : 'bad');
-    fb.textContent = isCorrect ? `נכון! +${pts} נק'` : `לא נכון — התשובה: ${fmtNum(r.q.answer)}`;
+    const d=document.getElementById('ans');
+    d.classList.add(ok?'correct':'wrong');
+    app.querySelectorAll('[data-k]').forEach(k=>k.disabled=true);
+    const fb=document.getElementById('fb');
+    fb.className='fb '+(ok?'ok':'bad');
+    fb.textContent = ok ? `נכון!  +${pts} נקודות` : `לא נכון — התשובה: ${fmtNum(r.q.answer)}`;
 
-    document.getElementById('scoreNum').textContent = r.score;
-    document.getElementById('streakNum').textContent = r.streak;
-    document.getElementById('answeredNum').textContent = r.answered;
-
-    setTimeout(() => {
-      if(competition && r.timeLeft<=0) return; // timer already ended round
-      r.q = makeQuestion(r.diff);
-      r.qStart = performance.now();
-      r.locked = false;
+    setTimeout(()=>{
+      if(competition && r.timeLeft<=0) return;
+      r.q=makeQuestion(r.diff); r.qStart=performance.now(); r.locked=false;
       render();
       if(competition) updateTimerVisual();
-    }, isCorrect ? 550 : 1100);
+    }, ok?600:1300);
   }
 
-  // ---------- practice summary ----------
+  // ================= RESULTS =================
   function renderPracticeSummary(){
-    const r = state.round;
-    const acc = r.answered ? Math.round((r.correct/r.answered)*100) : 0;
+    const r=state.round;
+    const acc=r.answered?Math.round(r.correct/r.answered*100):0;
     app.innerHTML = `
-      <div class="eyebrow">תרגול חופשי · ${DIFF_LABEL[r.diff]} · סיכום</div>
-      <h1 class="title">עבודה טובה</h1>
-      <div class="card">
-        <div class="result-score">${r.score}</div>
-        <div class="result-score-lbl">ניקוד בתרגול (לא נשמר)</div>
+      ${brandbar()}
+      <h1 class="title">סיכום תרגול · ${DIFF_LABEL[r.diff]}</h1>
+      <div class="panel green-top">
+        <div class="bigscore">${r.score}</div>
+        <div class="bigscore-l">ניקוד בתרגול (לא נשמר בטבלה)</div>
       </div>
       <div class="stat-row">
-        <div class="stat"><div class="num">${r.answered}</div><div class="lbl">שאלות</div></div>
-        <div class="stat"><div class="num">${acc}%</div><div class="lbl">דיוק</div></div>
-        <div class="stat"><div class="num">${r.streak}</div><div class="lbl">רצף אחרון</div></div>
+        <div class="stat"><div class="n">${r.answered}</div><div class="l">שאלות</div></div>
+        <div class="stat"><div class="n">${acc}%</div><div class="l">דיוק</div></div>
+        <div class="stat"><div class="n">${r.correct}</div><div class="l">נכונות</div></div>
       </div>
-      <button class="primary-btn" id="again">עוד סיבוב באותה רמה</button>
-      <button class="ghost-btn" data-go="home">חזרה לבית</button>
+      <button class="cta" id="again">עוד סיבוב באותה רמה</button>
+      <button class="ghost" id="home">חזרה לדף הבית</button>
     `;
-    app.querySelector('#again').onclick = () => startPractice(r.diff);
-    app.querySelector('[data-go="home"]').onclick = () => { state.screen='home'; render(); };
+    app.querySelector('#again').onclick=()=>startPractice(r.diff);
+    app.querySelector('#home').onclick=()=>{state.screen='home'; render();};
   }
 
-  // ---------- competition result ----------
   function renderCompResult(){
-    const r = state.round;
-    const lb = state.finalLb.slice().sort((a,b)=>b.score-a.score);
-    const idx = lb.findIndex(x => x.name===state.compName && x.score===r.score);
+    const r=state.round;
+    const lb=state.finalLb.slice().sort((a,b)=>b.score-a.score);
+    const i=lb.findIndex(x=>x.name.toLowerCase()===state.compName.toLowerCase());
     app.innerHTML = `
-      <div class="eyebrow">תחרות שבועית · תוצאה סופית</div>
-      <h1 class="title">הזמן נגמר</h1>
-      <div class="card">
-        <div class="result-score">${r.score}</div>
-        <div class="result-score-lbl">ניקוד סופי · ${r.answered} שאלות · ${r.correct} נכונות</div>
-        <div class="rank-badge">מקום ${idx+1} מתוך ${lb.length} השבוע</div>
+      ${brandbar()}
+      <h1 class="title">${state.quit?'פרשת מהתחרות':'הזמן נגמר'}</h1>
+      <div class="panel">
+        <div class="bigscore">${r.score}</div>
+        <div class="bigscore-l">${state.quit?'פרישה נרשמת עם 0 נקודות' : `ניקוד סופי · ${r.answered} שאלות · ${r.correct} נכונות`}</div>
+        <div class="rankpill">מקום ${i+1} מתוך ${lb.length} השבוע</div>
       </div>
-      ${leaderboardListHtml(lb, state.compName)}
-      <button class="ghost-btn" data-go="home">חזרה לבית</button>
+      ${lbHtml(lb, state.compName)}
+      <button class="ghost" id="home">חזרה לדף הבית</button>
     `;
-    app.querySelector('[data-go="home"]').onclick = () => { state.screen='home'; render(); };
+    state.quit=false;
+    app.querySelector('#home').onclick=()=>{state.screen='home'; render();};
   }
 
-  // ---------- leaderboard-only screen ----------
   async function renderLeaderboardScreen(){
     app.innerHTML = `
-      <div class="eyebrow">שבוע החל ${weekLabel}</div>
+      ${brandbar()}
       <h1 class="title">טבלת המובילים</h1>
-      <div class="card" id="lbCard">טוען...</div>
-      <button class="ghost-btn" data-go="home">חזרה לבית</button>
+      <p class="sub">השבוע שהחל ב-${weekLabel} · הטבלה מתאפסת בשבת ב-23:59</p>
+      <div class="panel" id="slot"><div class="lb-empty">טוען…</div></div>
+      <button class="ghost" id="home">חזרה לדף הבית</button>
     `;
-    app.querySelector('[data-go="home"]').onclick = () => { state.screen='home'; render(); };
-    const lb = (await getLeaderboard()).slice().sort((a,b)=>b.score-a.score);
-    const myName = await getPlayerName();
-    document.getElementById('lbCard').outerHTML = leaderboardListHtml(lb, myName, true);
+    app.querySelector('#home').onclick=()=>{state.screen='home'; render();};
+    const lb=(await getLeaderboard()).slice().sort((a,b)=>b.score-a.score);
+    const me=await getPlayerName();
+    const slot=document.getElementById('slot');
+    if(slot) slot.outerHTML=lbHtml(lb,me);
+    const h=app.querySelector('#home');
+    if(h) h.onclick=()=>{state.screen='home'; render();};
   }
 
-  function leaderboardListHtml(lb, myName, standalone){
-    if(!lb.length){
-      return `<div class="card"><div class="lb-empty">עדיין אין תוצאות השבוע — היו הראשונים להתחרות.</div></div>`;
-    }
-    const rows = lb.map((r,i) => `
-      <li class="lb-row ${myName && r.name.toLowerCase()===myName.toLowerCase() ? 'me' : ''}">
-        <span class="lb-rank">${i+1}</span>
-        <span class="lb-name">${esc(r.name)}</span>
-        <span class="lb-score">${r.score}</span>
-      </li>
-    `).join('');
-    return `<div class="card"><ul class="lb-list">${rows}</ul></div>`;
+  function lbHtml(lb, me){
+    if(!lb.length) return `<div class="panel"><div class="lb-empty">עדיין אין תוצאות השבוע — היו הראשונים להתחרות.</div></div>`;
+    const rows=lb.map((r,i)=>`
+      <li class="${me && r.name.toLowerCase()===me.toLowerCase()?'me':''}">
+        <span class="r">${i+1}</span>
+        <span class="n">${esc(r.name)}</span>
+        <span class="s">${r.score}</span>
+      </li>`).join('');
+    return `<div class="panel"><ul class="lb">${rows}</ul></div>`;
   }
 
   render();
