@@ -509,27 +509,27 @@
         return {text:`גובה רצפת קומת הקרקע ${fmtElev(base)} מ'. בבניין ${floors} קומות בגובה ${fmtNum(fh)} מ' כל אחת. מה גובה רצפת הקומה העליונה?`, answer:round2(base+floors*fh)};
     }},
     // ---------- DATES / LICENSING TIMELINE ----------
-    { diff:'medium', fmt:'date', gen(){
+    { diff:'easy', fmt:'date', gen(){
         const d=mkMY(), n=pick([4,5,6,7]);
         return {text:`היתר בנייה צפוי להתקבל כ-${n} חודשים מסיום בקרת התכן, שהסתיימה ב-${sMY(d)}. מתי צפוי להתקבל ההיתר?`, answer:sMY(shiftMY(d,n))};
     }},
-    { diff:'medium', fmt:'date', gen(){
+    { diff:'easy', fmt:'date', gen(){
         const d=mkMY(), n=pick([6,7,8,9,10]);
         return {text:`בין הגשת גרמושקה לדיון בוועדה התהליך אורך ${n} חודשים. הגשת הגרמושקה מתוכננת ל-${sMY(d)}. מתי יתקיים הדיון בוועדה?`, answer:sMY(shiftMY(d,n))};
     }},
-    { diff:'medium', fmt:'date', gen(){
+    { diff:'easy', fmt:'date', gen(){
         const d=mkMY();
         return {text:`תעודת גמר (טופס 5) ניתנת בדרך כלל כשנה לאחר טופס 4. טופס 4 התקבל ב-${sMY(d)}. מתי צפויה תעודת הגמר?`, answer:sMY(shiftMY(d,12))};
     }},
-    { diff:'medium', fmt:'date', gen(){
+    { diff:'easy', fmt:'date', gen(){
         const d=mkMY();
         return {text:`היתר בנייה פוקע אם לא התחילו בעבודות תוך שנה מיום קבלתו. ההיתר התקבל ב-${sMY(d)}. עד מתי חייבים להתחיל לבנות?`, answer:sMY(shiftMY(d,12))};
     }},
-    { diff:'medium', fmt:'date', gen(){
+    { diff:'easy', fmt:'date', gen(){
         const d=mkMY();
         return {text:`תוקף היתר בנייה הוא 3 שנים. ההיתר הופק ב-${sMY(d)}. מתי פג תוקפו?`, answer:sMY(shiftMY(d,36))};
     }},
-    { diff:'medium', fmt:'date', gen(){
+    { diff:'easy', fmt:'date', gen(){
         const d=mkMY(), n=pick([2,3]);
         return {text:`הוועדה המקומית מחליטה תוך ${mon(n)} מקליטת הבקשה. הבקשה נקלטה ב-${sMY(d)}. מתי צפויה ההחלטה?`, answer:sMY(shiftMY(d,n))};
     }},
@@ -552,8 +552,27 @@
     }}
   ];
 
+  // competition difficulty mix, and share of date questions inside the easy pool
+  const COMP_MIX = {easy:0.50, medium:0.35, hard:0.15};
+  const DATE_SHARE_EASY = 0.22;
+
+  function pickDiff(){
+    const r=Math.random();
+    if(r < COMP_MIX.easy) return 'easy';
+    if(r < COMP_MIX.easy + COMP_MIX.medium) return 'medium';
+    return 'hard';
+  }
+
   function makeQuestion(diff){
-    const pool = diff ? QUESTION_TYPES.filter(q=>q.diff===diff) : QUESTION_TYPES;
+    const d = diff || pickDiff();
+    let pool = QUESTION_TYPES.filter(q=>q.diff===d);
+    if(d==='easy'){
+      const dates  = pool.filter(q=>q.fmt==='date');
+      const others = pool.filter(q=>q.fmt!=='date');
+      if(dates.length && others.length){
+        pool = (Math.random() < DATE_SHARE_EASY) ? dates : others;
+      }
+    }
     const qt = pick(pool);
     const {text,answer} = qt.gen();
     return {diff:qt.diff, fmt:qt.fmt||'num', text, answer};
@@ -573,7 +592,7 @@
   // דוגמה: "https://my-project-default-rtdb.firebaseio.com"
   const FIREBASE_DB_URL = "https://ebmathgame-default-rtdb.europe-west1.firebasedatabase.app";
 
-  const APP_VERSION = "2026-08-22-v3";
+  const APP_VERSION = "2026-08-22-v4";
 
   const MODE = FIREBASE_DB_URL ? 'firebase'
              : (typeof window.storage !== 'undefined' ? 'artifact' : 'local');
@@ -732,7 +751,7 @@
 
           <div class="panel">
             <div class="panel-title">תחרות שבועית</div>
-            <div class="panel-desc">2 דקות, כל הנושאים והרמות מעורבבים. ניסיון אחד בלבד לכל כינוי בשבוע. הטבלה מתאפסת בשבת בחצות.</div>
+            <div class="panel-desc">2 דקות, כל הנושאים מעורבבים — רובן שאלות קלות. ניסיון אחד בלבד לכל כינוי בשבוע. הטבלה מתאפסת בשבת בחצות.</div>
             <button class="cta red" id="compBtn">כניסה לתחרות</button>
           </div>
 
@@ -784,14 +803,14 @@
           <div class="score-badge" style="background:var(--ink)">מהירות</div>
           <div>
             <h4>מהירות = נקודות</h4>
-            <p>כל תשובה נכונה מתחילה ב-100 נקודות, ויורדות כ-12 נקודות על כל שנייה שחולפת. המינימום לתשובה נכונה הוא 20 נקודות — גם אם לקח זמן.</p>
+            <p>כל תשובה נכונה מתחילה ב-100 נקודות, ויורדות כ-12 נקודות על כל שנייה שחולפת. גם אם לקח זמן, תשובה נכונה תמיד שווה לפחות 20 נקודות (כפול מכפיל הרמה).</p>
           </div>
         </div>
         <div class="score-item">
           <div class="score-badge" style="background:var(--red)">רמה</div>
           <div>
             <h4>מכפיל לפי רמת קושי</h4>
-            <p>קל ×1 · בינוני ×1.3 · קשה ×1.6. בתחרות מגיעות שאלות מכל הרמות, אז שאלה קשה שווה יותר.</p>
+            <p>קל ×1 · בינוני ×1.3 · קשה ×1.6. המכפיל חל גם על מינימום הנקודות, כך ששאלה קשה תמיד שווה יותר מקלה — גם כשלוקח זמן לפתור. בתחרות התערובת היא 50% קל, 35% בינוני, 15% קשה.</p>
           </div>
         </div>
         <div class="score-item">
@@ -1093,7 +1112,7 @@
 
     let pts=0;
     if(ok){
-      pts=Math.max(20,Math.round((100-secs*12)*DIFF_MULT[r.q.diff])) + Math.min(50,r.streak*5);
+      pts=Math.round(Math.max(20, 100-secs*12) * DIFF_MULT[r.q.diff]) + Math.min(50,r.streak*5);
       r.streak++; r.correct++;
     } else r.streak=0;
     r.score+=pts; r.answered++;
