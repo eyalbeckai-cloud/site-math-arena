@@ -71,7 +71,7 @@
   #app{
     width:100%;
     max-width:520px;
-    display:flex; flex-direction:column; gap:16px;
+    display:flex; flex-direction:column; gap:11px;
     margin:0 auto;
   }
   #app.wide{max-width:920px;}
@@ -160,7 +160,7 @@
   .qcard{
     background:var(--paper); color:var(--ink);
     border-radius:var(--radius);
-    padding:18px 18px 16px;
+    padding:14px 16px 13px;
     box-shadow:0 14px 30px rgba(0,0,0,0.45);
     text-align:center;
     border-top:5px solid var(--red);
@@ -183,7 +183,7 @@
     background:var(--ink-2);
     border:2px solid rgba(255,255,255,0.18);
     border-radius:12px;
-    min-height:56px;
+    min-height:50px;
     display:flex; align-items:center; justify-content:center;
     font-family:'Roboto Mono',monospace; font-weight:700;
     font-size:30px; letter-spacing:2px; color:#fff;
@@ -198,23 +198,30 @@
 
   .fb{
     text-align:center; font-family:'Heebo',sans-serif; font-weight:800;
-    font-size:16px; min-height:22px;
+    font-size:15px; min-height:19px;
+  }
+  .date-hint{
+    font-family:'Roboto Mono',monospace; font-size:13px;
+    color:var(--muted); margin-top:8px; direction:ltr;
   }
   .fb.ok{color:#5BD48B;}
   .fb.bad{color:#FF7A72;}
 
   /* ===== dialer keypad ===== */
   .keypad{
-    display:grid; grid-template-columns:repeat(3,1fr);
-    gap:clamp(10px,3vw,16px);
-    max-width:330px; margin:0 auto; width:100%;
+    display:grid;
+    grid-template-columns:repeat(3, clamp(58px,16vw,68px));
+    justify-content:center;
+    gap:clamp(8px,2.4vw,12px);
+    direction:ltr;            /* 1-2-3 left to right, like a real dialer */
+    margin:0 auto; width:100%;
   }
   .key{
-    aspect-ratio:1/1;
+    width:clamp(58px,16vw,68px); height:clamp(58px,16vw,68px);
     border:none; border-radius:50%;
     background:var(--ink-3); color:#fff;
     font-family:'Heebo',sans-serif; font-weight:500;
-    font-size:clamp(26px,7.5vw,32px);
+    font-size:clamp(23px,6.2vw,27px);
     cursor:pointer;
     display:flex; align-items:center; justify-content:center;
     transition:background .1s;
@@ -223,11 +230,11 @@
   .key:disabled{opacity:0.45;}
   .action-row{
     display:flex; justify-content:center; align-items:center;
-    gap:clamp(24px,10vw,50px);
-    margin-top:4px;
+    gap:clamp(20px,8vw,42px);
+    margin-top:2px;
   }
   .action-key{
-    width:clamp(66px,18vw,78px); height:clamp(66px,18vw,78px);
+    width:clamp(58px,16vw,68px); height:clamp(58px,16vw,68px);
     border:none; border-radius:50%;
     display:flex; flex-direction:column; align-items:center; justify-content:center;
     gap:1px;
@@ -355,6 +362,23 @@
   function fmtElev(n){ return round2(n).toFixed(2)+'+'; }
   function fmtNum(n){ const r=round2(n); return (r%1===0)?String(r):r.toFixed(2).replace(/0$/,''); }
   function pick(a){ return a[rand(0,a.length-1)]; }
+
+  // ---- month/year helpers for licensing-timeline questions ----
+  function mkMY(){ return {m:rand(1,12), y:rand(25,29)}; }          // y = 2-digit year
+  function shiftMY(d, months){
+    const t = d.y*12 + (d.m-1) + months;
+    return {m:(t%12)+1, y:Math.floor(t/12)};
+  }
+  function sMY(d){ return String(d.m).padStart(2,'0')+'/'+String(d.y).padStart(2,'0'); }
+  function mon(n){ return n===1 ? 'חודש' : n===2 ? 'חודשיים' : n+' חודשים'; }
+  function normDate(s){
+    const m=/^(\d{1,2})\/(\d{2,4})$/.exec(String(s).trim());
+    if(!m) return null;
+    const mm=parseInt(m[1],10);
+    if(mm<1||mm>12) return null;
+    let yy=m[2]; if(yy.length===4) yy=yy.slice(2);
+    return String(mm).padStart(2,'0')+'/'+yy.padStart(2,'0');
+  }
   function esc(s){ return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
   const QUESTION_TYPES = [
@@ -483,6 +507,48 @@
     { diff:'hard', gen(){
         const base=round2(rand(500,2500)/100), floors=rand(3,12), fh=pick([2.8,3,3.2,3.5]);
         return {text:`גובה רצפת קומת הקרקע ${fmtElev(base)} מ'. בבניין ${floors} קומות בגובה ${fmtNum(fh)} מ' כל אחת. מה גובה רצפת הקומה העליונה?`, answer:round2(base+floors*fh)};
+    }},
+    // ---------- DATES / LICENSING TIMELINE ----------
+    { diff:'medium', fmt:'date', gen(){
+        const d=mkMY(), n=pick([4,5,6,7]);
+        return {text:`היתר בנייה צפוי להתקבל כ-${n} חודשים מסיום בקרת התכן, שהסתיימה ב-${sMY(d)}. מתי צפוי להתקבל ההיתר?`, answer:sMY(shiftMY(d,n))};
+    }},
+    { diff:'medium', fmt:'date', gen(){
+        const d=mkMY(), n=pick([6,7,8,9,10]);
+        return {text:`בין הגשת גרמושקה לדיון בוועדה התהליך אורך ${n} חודשים. הגשת הגרמושקה מתוכננת ל-${sMY(d)}. מתי יתקיים הדיון בוועדה?`, answer:sMY(shiftMY(d,n))};
+    }},
+    { diff:'medium', fmt:'date', gen(){
+        const d=mkMY();
+        return {text:`תעודת גמר (טופס 5) ניתנת בדרך כלל כשנה לאחר טופס 4. טופס 4 התקבל ב-${sMY(d)}. מתי צפויה תעודת הגמר?`, answer:sMY(shiftMY(d,12))};
+    }},
+    { diff:'medium', fmt:'date', gen(){
+        const d=mkMY();
+        return {text:`היתר בנייה פוקע אם לא התחילו בעבודות תוך שנה מיום קבלתו. ההיתר התקבל ב-${sMY(d)}. עד מתי חייבים להתחיל לבנות?`, answer:sMY(shiftMY(d,12))};
+    }},
+    { diff:'medium', fmt:'date', gen(){
+        const d=mkMY();
+        return {text:`תוקף היתר בנייה הוא 3 שנים. ההיתר הופק ב-${sMY(d)}. מתי פג תוקפו?`, answer:sMY(shiftMY(d,36))};
+    }},
+    { diff:'medium', fmt:'date', gen(){
+        const d=mkMY(), n=pick([2,3]);
+        return {text:`הוועדה המקומית מחליטה תוך ${mon(n)} מקליטת הבקשה. הבקשה נקלטה ב-${sMY(d)}. מתי צפויה ההחלטה?`, answer:sMY(shiftMY(d,n))};
+    }},
+    { diff:'hard', fmt:'date', gen(){
+        const target=mkMY(), n=pick([6,8,9,10,12]);
+        return {text:`דיון בוועדה נקבע ל-${sMY(target)}, והתהליך מהגשת הבקשה ועד הדיון אורך ${n} חודשים. מתי לכל המאוחר יש להגיש את הבקשה?`, answer:sMY(shiftMY(target,-n))};
+    }},
+    { diff:'hard', fmt:'date', gen(){
+        const d=mkMY(), a=pick([1,2]), b=pick([3,4,5,6]), c=pick([2,3]);
+        return {text:`תיק מידע אורך ${mon(a)}, הכנת הבקשה ${mon(b)}, ובקרת תכן ואישורים עוד ${mon(c)}. התהליך התחיל ב-${sMY(d)}. מתי צפוי לצאת ההיתר?`, answer:sMY(shiftMY(d,a+b+c))};
+    }},
+    { diff:'hard', fmt:'date', gen(){
+        const start=mkMY(), n=pick([18,24,30,36]);
+        return {text:`משך הבנייה המתוכנן הוא ${n} חודשים. תחילת העבודות נקבעה ל-${sMY(start)}. מתי צפוי אכלוס (טופס 4)?`, answer:sMY(shiftMY(start,n))};
+    }},
+    { diff:'medium', gen(){
+        const d=mkMY(), n=pick([5,6,8,9,10,14,16]);
+        const end=shiftMY(d,n);
+        return {text:`הבקשה הוגשה ב-${sMY(d)} וההיתר התקבל ב-${sMY(end)}. כמה חודשים ארך התהליך?`, answer:n};
     }}
   ];
 
@@ -490,7 +556,7 @@
     const pool = diff ? QUESTION_TYPES.filter(q=>q.diff===diff) : QUESTION_TYPES;
     const qt = pick(pool);
     const {text,answer} = qt.gen();
-    return {diff:qt.diff, text, answer};
+    return {diff:qt.diff, fmt:qt.fmt||'num', text, answer};
   }
 
   // ---------- week: Sunday 00:00 -> Saturday 23:59 ----------
@@ -507,7 +573,7 @@
   // דוגמה: "https://my-project-default-rtdb.firebaseio.com"
   const FIREBASE_DB_URL = "https://ebmathgame-default-rtdb.europe-west1.firebasedatabase.app";
 
-  const APP_VERSION = "2026-08-22-fb-live";
+  const APP_VERSION = "2026-08-22-v3";
 
   const MODE = FIREBASE_DB_URL ? 'firebase'
              : (typeof window.storage !== 'undefined' ? 'artifact' : 'local');
@@ -940,9 +1006,10 @@
       <div class="qcard">
         <div class="diff-tag ${r.q.diff}">${DIFF_LABEL[r.q.diff]}</div>
         <div class="qtext">${esc(r.q.text)}</div>
+        ${r.q.fmt==='date' ? '<div class="date-hint">__ / __ &nbsp;(חודש/שנה)</div>' : ''}
       </div>
 
-      <div class="answer-bar empty" id="ans">הקישו את התשובה</div>
+      <div class="answer-bar empty" id="ans">${placeholderText()}</div>
       <div class="fb" id="fb"></div>
 
       <div class="keypad" id="pad">
@@ -978,7 +1045,7 @@
       if(k==='del') state.typed=state.typed.slice(0,-1);
       else if(k==='.'){ const last=state.typed.split('/').pop(); if(!last.includes('.')) state.typed += last===''?'0.':'.'; }
       else if(k==='/'){ if(state.typed && !state.typed.includes('/')) state.typed+='/'; }
-      else if(state.typed.length<12) state.typed+=k;
+      else if(state.typed.length < (state.round.q.fmt==='date'?5:12)) state.typed+=k;
       updateAns();
     };
     app.querySelector('#pad').addEventListener('click',handler);
@@ -988,11 +1055,14 @@
     else app.querySelector('#endPractice').onclick=()=>{state.screen='practice-summary'; render();};
   }
 
+  function placeholderText(){
+    return state.round && state.round.q.fmt==='date' ? 'הקישו חודש/שנה' : 'הקישו את התשובה';
+  }
   function updateAns(){
     const d=document.getElementById('ans');
     if(!d) return;
     if(state.typed){ d.textContent=state.typed; d.classList.remove('empty'); }
-    else { d.textContent='הקישו את התשובה'; d.classList.add('empty'); }
+    else { d.textContent=placeholderText(); d.classList.add('empty'); }
   }
 
   function parseTyped(s){
@@ -1011,9 +1081,15 @@
     if(competition && r.timeLeft<=0) return;
     r.locked=true;
 
-    const val=parseTyped(state.typed);
     const secs=(performance.now()-r.qStart)/1000;
-    const ok=!isNaN(val) && Math.abs(val-r.q.answer)<0.005;
+    let ok;
+    if(r.q.fmt==='date'){
+      const n=normDate(state.typed);
+      ok = n!==null && n===r.q.answer;
+    } else {
+      const val=parseTyped(state.typed);
+      ok = !isNaN(val) && Math.abs(val-r.q.answer)<0.005;
+    }
 
     let pts=0;
     if(ok){
@@ -1027,7 +1103,8 @@
     app.querySelectorAll('[data-k]').forEach(k=>k.disabled=true);
     const fb=document.getElementById('fb');
     fb.className='fb '+(ok?'ok':'bad');
-    fb.textContent = ok ? `נכון!  +${pts} נקודות` : `לא נכון — התשובה: ${fmtNum(r.q.answer)}`;
+    const shown = r.q.fmt==='date' ? r.q.answer : fmtNum(r.q.answer);
+    fb.textContent = ok ? `נכון!  +${pts} נקודות` : `לא נכון — התשובה: ${shown}`;
 
     setTimeout(()=>{
       if(competition && r.timeLeft<=0) return;
