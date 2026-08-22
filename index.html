@@ -502,16 +502,119 @@
   const weekId = getWeekId(new Date());
   const weekLabel = new Date(weekId).toLocaleDateString('he',{day:'numeric',month:'numeric'});
 
-  async function storGet(k,sh){ try{const r=await window.storage.get(k,!!sh); return r?r.value:null;}catch(e){return null;} }
-  async function storSet(k,v,sh){ try{await window.storage.set(k,v,!!sh); return true;}catch(e){return false;} }
+  // ================= BACKEND =================
+  // מצב משותף אמיתי: הדביקו כאן את כתובת ה-Realtime Database מ-Firebase.
+  // דוגמה: "https://my-project-default-rtdb.firebaseio.com"
+  const FIREBASE_DB_URL = "";
+
+  const APP_VERSION = "2026-08-22-diag1";
+
+  const MODE = FIREBASE_DB_URL ? 'firebase'
+             : (typeof window.storage !== 'undefined' ? 'artifact' : 'local');
+
+  function httpHint(s){
+    if(s===401||s===403) return 'הרשאות נדחו — כללי ה-Rules חוסמים כתיבה/קריאה';
+    if(s===404) return 'הכתובת לא נמצאה — ודאו Realtime Database (לא Firestore) ושהכתובת מדויקת';
+    if(s===400) return 'בקשה שגויה';
+    return '';
+  }
+  function wrapErr(e){
+    if(e && e.name==='TypeError') return new Error('החיבור נחסם או שאין אינטרנט (CORS/רשת)');
+    return e;
+  }
+
+  function nameKey(n){
+    return n.trim().toLowerCase().replace(/[.$#\[\]\/]/g,'_').replace(/\s+/g,'_');
+  }
+
+  function dbUrl(path){ return FIREBASE_DB_URL.replace(/\/+$/,'') + '/' + path + '.json'; }
+  async function fbGet(path){
+    let r;
+    try{ r = await fetch(dbUrl(path)); }catch(e){ throw wrapErr(e); }
+    if(!r.ok) throw new Error('HTTP ' + r.status + (httpHint(r.status)?' — '+httpHint(r.status):''));
+    return await r.json();
+  }
+  async function fbPut(path, data){
+    let r;
+    try{
+      r = await fetch(dbUrl(path), {method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data)});
+    }catch(e){ throw wrapErr(e); }
+    if(!r.ok) throw new Error('HTTP ' + r.status + (httpHint(r.status)?' — '+httpHint(r.status):''));
+    return await r.json();
+  }
+
+  // local/artifact fallbacks
+  let memStore = {};
+  async function rawGet(k){
+    if(MODE==='artifact'){ try{const r=await window.storage.get(k,true); return r?r.value:null;}catch(e){return null;} }
+    try{ return localStorage.getItem(k); }catch(e){ return memStore[k]||null; }
+  }
+  async function rawSet(k,v){
+    if(MODE==='artifact'){ try{await window.storage.set(k,v,true); return;}catch(e){return;} }
+    try{ localStorage.setItem(k,v); }catch(e){ memStore[k]=v; }
+  }
+
+  // ---- leaderboard API (throws on real failure so the UI can report it) ----
   async function getLeaderboard(){
-    const FIREBASE_DB_URL = "https://ebmathgame-default-rtdb.europe-west1.firebasedatabase.app";
-const raw=await storGet('leaderboard:'+weekId,true);
+    if(MODE==='firebase'){
+      const obj = await fbGet('leaderboard/'+weekId);
+      return obj ? Object.values(obj) : [];
+    }
+    const raw = await rawGet('leaderboard:'+weekId);
     try{ return raw?JSON.parse(raw):[]; }catch(e){ return []; }
   }
-  async function saveLeaderboard(a){ await storSet('leaderboard:'+weekId, JSON.stringify(a), true); }
-  async function getPlayerName(){ return await storGet('player-name',false); }
-  async function setPlayerName(n){ await storSet('player-name',n,false); }
+
+  async function findEntry(name){
+    if(MODE==='firebase'){
+      return await fbGet('leaderboard/'+weekId+'/'+nameKey(name));
+    }
+    const lb = await getLeaderboard();
+    return lb.find(r=>nameKey(r.name)===nameKey(name)) || null;
+  }
+
+  async function saveEntry(name, score){
+    const entry = {name:name.trim(), score:score, ts:Date.now()};
+    if(MODE==='firebase'){
+      await fbPut('leaderboard/'+weekId+'/'+nameKey(name), entry);
+      return entry;
+    }
+    const lb = await getLeaderboard();
+    const i = lb.findIndex(r=>nameKey(r.name)===nameKey(name));
+    if(i>=0) lb[i]=entry; else lb.push(entry);
+    await rawSet('leaderboard:'+weekId, JSON.stringify(lb));
+    return entry;
+  }
+
+  async function getPlayerName(){
+    try{ return localStorage.getItem('player-name'); }catch(e){ return memStore['player-name']||null; }
+  }
+  async function setPlayerName(n){
+    try{ localStorage.setItem('player-name',n); }catch(e){ memStore['player-name']=n; }
+  }
+
+  function modeNote(){
+    if(MODE==='firebase') return '';
+    return `<p class="footnote" style="margin-top:6px">שימו לב: הטבלה נשמרת כרגע במכשיר הזה בלבד — חברים לא יראו את התוצאות שלכם. כדי להפעיל טבלה משותפת יש להזין כתובת Firebase בקובץ.</p>`;
+  }
+
+  async function runDiag(){
+    const L=[];
+    L.push(['גרסת קובץ', APP_VERSION, 'info']);
+    L.push(['מצב עבודה', MODE==='firebase'?'Firebase (טבלה משותפת)':'מקומי בלבד', MODE==='firebase'?'ok':'bad']);
+    L.push(['כתובת DB', FIREBASE_DB_URL || '(ריק — לא הוזנה כתובת)', FIREBASE_DB_URL?'info':'bad']);
+    L.push(['מזהה שבוע', weekId, 'info']);
+    if(MODE!=='firebase'){
+      L.push(['אבחנה','הקובץ שרץ כרגע לא מכיל כתובת Firebase. או שלא נשמרה, או שהועלה קובץ ישן, או שהדפדפן מציג גרסה מהמטמון.','bad']);
+      return L;
+    }
+    try{ await fbPut('_diag/ping', {ts:Date.now()}); L.push(['כתיבה לבסיס','הצליחה','ok']); }
+    catch(e){ L.push(['כתיבה לבסיס','נכשלה — '+e.message,'bad']); return L; }
+    try{ const v=await fbGet('_diag/ping'); L.push(['קריאה מהבסיס', v?'הצליחה':'החזירה ריק', v?'ok':'bad']); }
+    catch(e){ L.push(['קריאה מהבסיס','נכשלה — '+e.message,'bad']); }
+    try{ const lb=await getLeaderboard(); L.push(['רשומות בטבלה השבוע', String(lb.length), 'info']); }
+    catch(e){ L.push(['טעינת הטבלה','נכשלה — '+e.message,'bad']); }
+    return L;
+  }
 
   const app=document.getElementById('app');
   let state={screen:'home'};
@@ -536,6 +639,7 @@ const raw=await storGet('leaderboard:'+weekId,true);
       case 'comp-result': return renderCompResult();
       case 'leaderboard': return renderLeaderboardScreen();
       case 'scoring': return renderScoring();
+      case 'diag': return renderDiag();
     }
   }
 
@@ -568,6 +672,7 @@ const raw=await storGet('leaderboard:'+weekId,true);
 
           <button class="ghost" id="lbBtn">טבלת המובילים השבוע</button>
           <button class="ghost small" id="scoringBtn">איך מחושב הניקוד?</button>
+          <button class="ghost small" id="diagBtn">בדיקת חיבור לטבלה</button>
         </div>
       </div>
     `;
@@ -575,6 +680,32 @@ const raw=await storGet('leaderboard:'+weekId,true);
     app.querySelector('#compBtn').onclick=startCompetitionFlow;
     app.querySelector('#lbBtn').onclick=()=>{state.screen='leaderboard'; render();};
     app.querySelector('#scoringBtn').onclick=()=>{state.screen='scoring'; render();};
+    app.querySelector('#diagBtn').onclick=()=>{state.screen='diag'; render();};
+  }
+
+  async function renderDiag(){
+    app.innerHTML = `
+      ${brandbar()}
+      <h1 class="title">בדיקת חיבור</h1>
+      <div class="panel" id="diagSlot"><div class="lb-empty">בודק…</div></div>
+      <button class="ghost" id="home">חזרה לדף הבית</button>
+    `;
+    app.querySelector('#home').onclick=()=>{state.screen='home'; render();};
+    const rows=await runDiag();
+    const html=rows.map(([k,v,st])=>`
+      <div class="score-item">
+        <div class="score-badge" style="background:${st==='ok'?'var(--green)':st==='bad'?'var(--red)':'var(--ink)'};font-size:20px">
+          ${st==='ok'?'✓':st==='bad'?'✕':'i'}
+        </div>
+        <div style="min-width:0">
+          <h4>${esc(k)}</h4>
+          <p style="word-break:break-all">${esc(v)}</p>
+        </div>
+      </div>`).join('');
+    const slot=document.getElementById('diagSlot');
+    if(slot) slot.innerHTML=html;
+    const hb=app.querySelector('#home');
+    if(hb) hb.onclick=()=>{state.screen='home'; render();};
   }
 
   // ================= SCORING PAGE =================
@@ -635,9 +766,11 @@ const raw=await storGet('leaderboard:'+weekId,true);
 
   async function startCompetitionFlow(){
     const name=await getPlayerName();
-    const lb=await getLeaderboard();
-    if(name && lb.find(r=>r.name.toLowerCase()===name.toLowerCase())){
-      state.compName=name; state.lb=lb; state.screen='comp-already'; render(); return;
+    if(name){
+      try{
+        const e=await findEntry(name);
+        if(e){ state.compName=name; state.entry=e; state.screen='comp-already'; render(); return; }
+      }catch(err){ /* offline: let them try, the start below will report */ }
     }
     state.screen='comp-name'; render();
   }
@@ -651,41 +784,46 @@ const raw=await storGet('leaderboard:'+weekId,true);
         <div class="panel-title">הכינוי שלך בטבלה</div>
         <div class="panel-desc">כל כינוי יכול להתחרות פעם אחת בשבוע. אם תפרוש באמצע — הכינוי יישאר בטבלה עם 0 נקודות.</div>
         <input class="name-input" id="nameField" maxlength="18" placeholder="שם או כינוי" />
+        <div id="nameErr" style="color:var(--red);font-size:15px;font-weight:700;margin-top:10px;line-height:1.4"></div>
       </div>
+      ${modeNote()}
       <button class="cta red" id="go">התחל · 2 דקות</button>
       <button class="ghost" id="back">ביטול</button>
     `;
     const f=app.querySelector('#nameField'), g=app.querySelector('#go');
     f.focus();
     f.addEventListener('keydown',e=>{ if(e.key==='Enter') g.click(); });
+    const errBox=app.querySelector('#nameErr');
     g.onclick=async()=>{
       const v=f.value.trim();
       if(!v){ f.style.borderColor='var(--red)'; return; }
-      const lb=await getLeaderboard();
-      if(lb.find(r=>r.name.toLowerCase()===v.toLowerCase())){
-        state.compName=v; state.lb=lb; state.screen='comp-already'; render(); return;
+      g.disabled=true; g.textContent='רושם…'; errBox.textContent='';
+      try{
+        const existing=await findEntry(v);
+        if(existing){
+          state.compName=v; state.entry=existing; state.screen='comp-already'; render(); return;
+        }
+        // reserve the slot immediately with 0 — quitting or closing leaves 0
+        await saveEntry(v, 0);
+        await setPlayerName(v);
+        state.compName=v;
+        beginCompetition();
+      }catch(err){
+        g.disabled=false; g.textContent='התחל · 2 דקות';
+        errBox.textContent='לא הצלחנו להתחבר לטבלת התחרות ('+err.message+'). בדקו חיבור אינטרנט ונסו שוב.';
       }
-      await setPlayerName(v);
-      state.compName=v;
-      // reserve the slot immediately with 0 — quitting or closing leaves 0
-      lb.push({name:v, score:0, ts:Date.now()});
-      await saveLeaderboard(lb);
-      beginCompetition();
     };
     app.querySelector('#back').onclick=()=>{state.screen='home'; render();};
   }
 
   function renderCompAlready(){
-    const lb=state.lb.slice().sort((a,b)=>b.score-a.score);
-    const i=lb.findIndex(r=>r.name.toLowerCase()===state.compName.toLowerCase());
     app.innerHTML = `
       ${brandbar()}
-      <h1 class="title">כבר התחרית השבוע</h1>
+      <h1 class="title">הכינוי כבר התחרה השבוע</h1>
       <p class="sub">ניסיון אחד לכל כינוי בשבוע. ביום ראשון נפתחת תחרות חדשה.</p>
       <div class="panel">
-        <div class="bigscore">${lb[i].score}</div>
-        <div class="bigscore-l">הניקוד שלך השבוע</div>
-        <div class="rankpill">מקום ${i+1} מתוך ${lb.length}</div>
+        <div class="bigscore">${state.entry.score}</div>
+        <div class="bigscore-l">הניקוד של "${esc(state.entry.name)}" השבוע</div>
       </div>
       <button class="ghost" id="lb">לטבלה המלאה</button>
       <button class="ghost" id="home">חזרה לדף הבית</button>
@@ -707,11 +845,14 @@ const raw=await storGet('leaderboard:'+weekId,true);
   }
 
   async function finishCompetition(){
-    const lb=await getLeaderboard();
-    const e=lb.find(r=>r.name.toLowerCase()===state.compName.toLowerCase());
-    if(e) e.score=state.round.score; else lb.push({name:state.compName, score:state.round.score, ts:Date.now()});
-    await saveLeaderboard(lb);
-    state.finalLb=lb;
+    state.saveError=null;
+    try{
+      await saveEntry(state.compName, state.round.score);
+      state.finalLb = await getLeaderboard();
+    }catch(err){
+      state.saveError = err.message;
+      state.finalLb = [];
+    }
     state.screen='comp-result';
     render();
   }
@@ -922,16 +1063,19 @@ const raw=await storGet('leaderboard:'+weekId,true);
   function renderCompResult(){
     const r=state.round;
     const lb=state.finalLb.slice().sort((a,b)=>b.score-a.score);
-    const i=lb.findIndex(x=>x.name.toLowerCase()===state.compName.toLowerCase());
+    const i=lb.findIndex(x=>nameKey(x.name)===nameKey(state.compName));
     app.innerHTML = `
       ${brandbar()}
       <h1 class="title">${state.quit?'פרשת מהתחרות':'הזמן נגמר'}</h1>
       <div class="panel">
         <div class="bigscore">${r.score}</div>
         <div class="bigscore-l">${state.quit?'פרישה נרשמת עם 0 נקודות' : `ניקוד סופי · ${r.answered} שאלות · ${r.correct} נכונות`}</div>
-        <div class="rankpill">מקום ${i+1} מתוך ${lb.length} השבוע</div>
+        ${i>=0 ? `<div class="rankpill">מקום ${i+1} מתוך ${lb.length} השבוע</div>` : ''}
       </div>
-      ${lbHtml(lb, state.compName)}
+      ${state.saveError
+        ? `<p class="footnote" style="color:#FF7A72">הניקוד לא נשמר בטבלה (${esc(state.saveError)}). בדקו את החיבור לאינטרנט.</p>`
+        : lbHtml(lb, state.compName)}
+      ${modeNote()}
       <button class="ghost" id="home">חזרה לדף הבית</button>
     `;
     state.quit=false;
@@ -947,10 +1091,16 @@ const raw=await storGet('leaderboard:'+weekId,true);
       <button class="ghost" id="home">חזרה לדף הבית</button>
     `;
     app.querySelector('#home').onclick=()=>{state.screen='home'; render();};
-    const lb=(await getLeaderboard()).slice().sort((a,b)=>b.score-a.score);
+    let lb=[], failed=null;
+    try{ lb=(await getLeaderboard()).slice().sort((a,b)=>b.score-a.score); }
+    catch(err){ failed=err.message; }
     const me=await getPlayerName();
     const slot=document.getElementById('slot');
-    if(slot) slot.outerHTML=lbHtml(lb,me);
+    if(slot){
+      slot.outerHTML = failed
+        ? `<div class="panel"><div class="lb-empty">לא הצלחנו לטעון את הטבלה (${esc(failed)}). בדקו את החיבור לאינטרנט.</div></div>` + modeNote()
+        : lbHtml(lb,me) + modeNote();
+    }
     const h=app.querySelector('#home');
     if(h) h.onclick=()=>{state.screen='home'; render();};
   }
@@ -958,7 +1108,7 @@ const raw=await storGet('leaderboard:'+weekId,true);
   function lbHtml(lb, me){
     if(!lb.length) return `<div class="panel"><div class="lb-empty">עדיין אין תוצאות השבוע — היו הראשונים להתחרות.</div></div>`;
     const rows=lb.map((r,i)=>`
-      <li class="${me && r.name.toLowerCase()===me.toLowerCase()?'me':''}">
+      <li class="${me && nameKey(r.name)===nameKey(me)?'me':''}">
         <span class="r">${i+1}</span>
         <span class="n">${esc(r.name)}</span>
         <span class="s">${r.score}</span>
