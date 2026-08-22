@@ -384,7 +384,7 @@
   const QUESTION_TYPES = [
     // ---------- EASY ----------
     { diff:'easy', gen(){
-        const a=rand(15,400), b=rand(15,400);
+        const a=rand(3,60)*5, b=rand(3,60)*5;
         const t=pick([
           (a,b)=>`לאתר הגיעו בבוקר ${a} שקי מלט, ובצהריים עוד ${b} שקים. כמה שקים הגיעו סה"כ?`,
           (a,b)=>`הריצוף בקומה א׳ הוא ${a} מ"ר, ובקומה ב׳ ${b} מ"ר. כמה מ"ר ריצוף סה"כ?`,
@@ -393,7 +393,7 @@
         return {text:t(a,b), answer:a+b};
     }},
     { diff:'easy', gen(){
-        const a=rand(200,900), b=rand(20,a-10);
+        const a=rand(20,90)*10, b=rand(5,(a/10)-2)*10;
         const t=pick([
           (a,b)=>`מתקציב של ${a} ש"ח הוצאתם ${b} ש"ח על חומרים. כמה נשאר בתקציב?`,
           (a,b)=>`במחסן היו ${a} מוטות ברזל, נלקחו ${b} לאתר. כמה מוטות נשארו במחסן?`,
@@ -402,7 +402,7 @@
         return {text:t(a,b), answer:a-b};
     }},
     { diff:'easy', gen(){
-        const before=rand(80,400), after=before-rand(5,80);
+        const before=rand(8,40)*10, after=before-rand(1,15)*5;
         return {text:`היו ${before} יחידות דיור מתוכננות בפרויקט, היום נותרו בתכנית ${after} יחידות. כמה יחידות בוטלו?`, answer:before-after};
     }},
     { diff:'easy', gen(){
@@ -410,12 +410,20 @@
         return {text:`בבניין ${f} קומות, ובכל קומה ${p} דירות. כמה דירות יש בבניין סה"כ?`, answer:f*p};
     }},
     { diff:'easy', gen(){
-        const total=rand(500,3000), net=total-rand(50,400);
+        const total=rand(50,300)*10, net=total-rand(5,40)*10;
         return {text:`השטח הבנוי הכולל של הבניין הוא ${total} מ"ר, מתוכם ${net} מ"ר שטח דירות נטו. כמה מ"ר שטחים משותפים?`, answer:total-net};
     }},
     { diff:'easy', gen(){
         const rooms=rand(3,6), each=rand(8,30);
         return {text:`בדירה ${rooms} חדרים, בכל חדר ${each} מ"ר. מה שטח הדירה?`, answer:rooms*each};
+    }},
+    { diff:'easy', gen(){
+        const p=pick([10,25,50]), a=rand(2,40)*100;
+        return {text:`ניתנה הנחה של ${p}% על הזמנת חומרים בסך ${a} ש"ח. כמה ש"ח ההנחה?`, answer:Math.round(a*p/100)};
+    }},
+    { diff:'easy', gen(){
+        const b=pick([2,4,5,10]), q=rand(3,40), a=b*q;
+        return {text:`${a} שקי מלט חולקו שווה בשווה ל-${b} קומות. כמה שקים לכל קומה?`, answer:q};
     }},
     // ---------- MEDIUM ----------
     { diff:'medium', gen(){
@@ -472,7 +480,7 @@
         return {text:`בפרויקט ${u} דירות, ובכל דירה חובה ממ"ד בשטח ${s} מ"ר. כמה מ"ר ממ"דים בסה"כ בפרויקט?`, answer:u*s};
     }},
     { diff:'medium', gen(){
-        const u=rand(10,150), per=rand(50,80)*10000, budget=u*per;
+        const u=pick([10,20,25,50,100]), per=rand(4,9)*100000, budget=u*per;
         return {text:`תקציב הפרויקט הוא ${budget.toLocaleString('he')} ש"ח, ובו ${u} דירות. כמה עולה כל דירה בממוצע?`, answer:per};
     }},
     { diff:'medium', gen(){
@@ -504,7 +512,7 @@
         const len=rand(10,40), wid=rand(5,20), dep=pick([0.2,0.25,0.3,0.4,0.5]);
         return {text:`יש לצקת רצפת בטון באורך ${len} מ', רוחב ${wid} מ' ובעובי ${fmtNum(dep)} מ'. כמה מ"ק בטון נדרשים?`, answer:round2(len*wid*dep)};
     }},
-    { diff:'hard', gen(){
+    { diff:'medium', gen(){
         const base=round2(rand(500,2500)/100), floors=rand(3,12), fh=pick([2.8,3,3.2,3.5]);
         return {text:`גובה רצפת קומת הקרקע ${fmtElev(base)} מ'. בבניין ${floors} קומות בגובה ${fmtNum(fh)} מ' כל אחת. מה גובה רצפת הקומה העליונה?`, answer:round2(base+floors*fh)};
     }},
@@ -533,15 +541,15 @@
         const d=mkMY(), n=pick([2,3]);
         return {text:`הוועדה המקומית מחליטה תוך ${mon(n)} מקליטת הבקשה. הבקשה נקלטה ב-${sMY(d)}. מתי צפויה ההחלטה?`, answer:sMY(shiftMY(d,n))};
     }},
-    { diff:'hard', fmt:'date', gen(){
+    { diff:'medium', fmt:'date', gen(){
         const target=mkMY(), n=pick([6,8,9,10,12]);
         return {text:`דיון בוועדה נקבע ל-${sMY(target)}, והתהליך מהגשת הבקשה ועד הדיון אורך ${n} חודשים. מתי לכל המאוחר יש להגיש את הבקשה?`, answer:sMY(shiftMY(target,-n))};
     }},
-    { diff:'hard', fmt:'date', gen(){
+    { diff:'medium', fmt:'date', gen(){
         const d=mkMY(), a=pick([1,2]), b=pick([3,4,5,6]), c=pick([2,3]);
         return {text:`תיק מידע אורך ${mon(a)}, הכנת הבקשה ${mon(b)}, ובקרת תכן ואישורים עוד ${mon(c)}. התהליך התחיל ב-${sMY(d)}. מתי צפוי לצאת ההיתר?`, answer:sMY(shiftMY(d,a+b+c))};
     }},
-    { diff:'hard', fmt:'date', gen(){
+    { diff:'medium', fmt:'date', gen(){
         const start=mkMY(), n=pick([18,24,30,36]);
         return {text:`משך הבנייה המתוכנן הוא ${n} חודשים. תחילת העבודות נקבעה ל-${sMY(start)}. מתי צפוי אכלוס (טופס 4)?`, answer:sMY(shiftMY(start,n))};
     }},
@@ -592,7 +600,7 @@
   // דוגמה: "https://my-project-default-rtdb.firebaseio.com"
   const FIREBASE_DB_URL = "https://ebmathgame-default-rtdb.europe-west1.firebasedatabase.app";
 
-  const APP_VERSION = "2026-08-22-v4";
+  const APP_VERSION = "2026-08-22-v5";
 
   const MODE = FIREBASE_DB_URL ? 'firebase'
              : (typeof window.storage !== 'undefined' ? 'artifact' : 'local');
